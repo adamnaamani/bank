@@ -1,20 +1,18 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Bank</title>
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
-    <%= render 'partials/meta' %>
-    <%= render 'partials/favicon' %>
-    <%= stylesheet_link_tag 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' %>
-  </head>
-  <body>
-    <%= yield %>
-  </body>
-  <footer>
-    <%= javascript_include_tag 'https://code.jquery.com/jquery-3.3.1.slim.min.js' %>
-    <%= javascript_include_tag 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js' %>
-    <%= javascript_include_tag 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js' %>
-    <%= javascript_pack_tag 'react' %>  	
-  </footer>
+<head>
+<title>Bank</title>
+<%= csrf_meta_tags %>
+<%= csp_meta_tag %>
+<%= render 'partials/meta' %>
+<%= render 'partials/favicon' %>
+</head>
+<body style="display: none;">
+  <%= yield %>
+</body>
+<footer>
+<%= javascript_include_tag 'https://code.jquery.com/jquery-3.3.1.slim.min.js' %>
+<%= javascript_include_tag 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js' %>
+<%= javascript_pack_tag 'react' %>  	
+</footer>
 </html>

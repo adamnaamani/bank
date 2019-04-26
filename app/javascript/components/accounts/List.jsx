@@ -20,6 +20,9 @@ class List extends Component {
 	onChange = e => {
     this.setState({ [e.target.name]: e.target.value })
   }
+  addAccount = e => {
+  	console.log(e)
+  }
   editAccount = e => {
   	console.log(e)
   }
