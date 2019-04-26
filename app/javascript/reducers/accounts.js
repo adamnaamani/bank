@@ -8,11 +8,21 @@ const initialState = {
 export default function(state = initialState, action) {
   switch(action.type) {
     case GET_ACCOUNTS:
-      return {...state, accounts: action.payload, loaded: true}
+      return {
+      	...state, 
+      	accounts: action.payload, 
+      	loaded: true
+      }
     case ADD_ACCOUNT:
-      return {...state, accounts: [...state.accounts, action.payload]}      
+      return {
+      	...state, 
+      	accounts: [...state.accounts, action.payload]
+      }      
     case DELETE_ACCOUNT:
-      return {...state, accounts: state.accounts.filter(account => account.id !== action.payload)}      
+      return {
+      	...state, 
+      	accounts: state.accounts.filter(account => account.id !== action.payload)
+      }
     default:
       return state;
   }

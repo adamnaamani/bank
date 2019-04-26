@@ -14,7 +14,10 @@ export class Header extends Component {
     )
     return (
       <nav className="navbar navbar-expand-lg navbar-light bg-light navbar-fixed-top">
-       	<a className="navbar-brand"><img src="/android-chrome-192x192.png" style={{width: 20, height: 20}} /></a><a className="navbar-brand" href="/">Bank</a>
+       	<a className="navbar-brand">
+       		<img src="/android-chrome-192x192.png" style={{width: 20, height: 20}} />
+       		<img src="/bank-logo.png" style={{height: 20, width: 'auto'}} />
+       	</a>
         <div className="navbar-collapse" id="navbarSupportedContent">
           {guestLinks}
         </div>
