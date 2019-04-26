@@ -74,32 +74,11 @@ html {
   text-size-adjust: 100%;
 }
 body {
-	border-top: 80px solid transparent;
+	border-top: 60px solid transparent;
 }
 body * {
   @include box_sizing;
   outline: none;
-}
-
-/* Common */
-.hidden {
-	display: none;
-}
-.noselect {
-	-webkit-touch-callout: none; 
-	-webkit-user-select: none;
-	-khtml-user-select: none; 
-	-moz-user-select: none;
-	-ms-user-select: none; 
-	user-select: none; 
-}
-.touch-scroll {
-	-webkit-overflow-scrolling: touch;
-}
-.flex {
-	display: flex;
-	justify-content: center;
-	align-items: center; 		
 }
 
 /* Typography */
@@ -132,19 +111,48 @@ i {
 	font-style: italic;
 }
 
+/* Common */
+.hidden {
+	display: none;
+}
+.noselect {
+	-webkit-touch-callout: none; 
+	-webkit-user-select: none;
+	-khtml-user-select: none; 
+	-moz-user-select: none;
+	-ms-user-select: none; 
+	user-select: none; 
+}
+.touch-scroll {
+	-webkit-overflow-scrolling: touch;
+}
+.flex {
+	display: flex;
+	justify-content: center;
+	align-items: center; 		
+}
+
 /* Bootstrap */
 .navbar-brand img {
-  display: block;
-  width: 20px; height: 20px;
+  display: inline-block;
+  vertical-align: middle;
+  &:first-child {
+  	margin: 0 6px 0 0;
+  }
+  &:last-child {
+		opacity: 0.75;
+  }
 }
 .navbar {
 	position: fixed; top: 0; left: 0; right: 0;
+	box-shadow: 0 1px 0 rgba(0,0,0,0.08);
 }
 .container {
 	overflow: hidden;
 }
 .table {
 	overflow: scroll;
+	font-size: 15px;
 	td, th {
 		text-overflow: ellipsis;
 		white-space: nowrap;
@@ -152,6 +160,3 @@ i {
 		vertical-align: middle;
 	}
 }
-
-/* Bank */
-
