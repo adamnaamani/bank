@@ -73,6 +73,9 @@ html {
   text-rendering: optimizeLegibility;
   text-size-adjust: 100%;
 }
+body {
+	border-top: 80px solid transparent;
+}
 body * {
   @include box_sizing;
   outline: none;
@@ -97,18 +100,6 @@ body * {
 	display: flex;
 	justify-content: center;
 	align-items: center; 		
-}
-.container {
-	overflow: hidden;
-}
-.table {
-	overflow: scroll;
-	td, th {
-		text-overflow: ellipsis;
-		white-space: nowrap;
-		overflow: scroll;
-		vertical-align: middle;
-	}
 }
 
 /* Typography */
@@ -141,8 +132,26 @@ i {
 	font-style: italic;
 }
 
-/* Bank */
+/* Bootstrap */
 .navbar-brand img {
   display: block;
   width: 20px; height: 20px;
 }
+.navbar {
+	position: fixed; top: 0; left: 0; right: 0;
+}
+.container {
+	overflow: hidden;
+}
+.table {
+	overflow: scroll;
+	td, th {
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		overflow: scroll;
+		vertical-align: middle;
+	}
+}
+
+/* Bank */
+

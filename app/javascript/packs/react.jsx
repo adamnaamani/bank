@@ -4,11 +4,17 @@ import { Provider, connect } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import store from '../store';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/Layout.scss';
 import Header from '../components/layout/Header'
 import List from '../components/accounts/List'
 
 class App extends Component {
+	componentDidMount() {
+		setTimeout(_=> {
+			document.body.style.display = 'block';
+		}, 300)
+	}
 	render() {
 		return (
 			<Provider store={store}>

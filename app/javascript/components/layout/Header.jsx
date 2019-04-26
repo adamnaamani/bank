@@ -13,7 +13,7 @@ export class Header extends Component {
       </ul>      
     )
     return (
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
+      <nav className="navbar navbar-expand-lg navbar-light bg-light navbar-fixed-top">
        	<a className="navbar-brand"><img src="/android-chrome-192x192.png" style={{width: 20, height: 20}} /></a><a className="navbar-brand" href="/">Bank</a>
         <div className="navbar-collapse" id="navbarSupportedContent">
           {guestLinks}
