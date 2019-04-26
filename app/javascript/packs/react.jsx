@@ -13,7 +13,7 @@ class App extends Component {
 	componentDidMount() {
 		setTimeout(_=> {
 			document.body.style.display = 'block';
-		}, 300)
+		}, 500)
 	}
 	render() {
 		return (
