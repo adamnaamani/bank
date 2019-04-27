@@ -1,9 +1,18 @@
 class Api::V1Controller < ApplicationController
 	include Categorizable
+	require 'ostruct'
+
 	before_action :authenticate
 
 	def get_user
 		render json: { user: @user }
+	end
+
+	def get_institutions
+		account = JSON.parse(params[:account], object_class: OpenStruct)
+		institution = Institution.where(routing_number: account.routing_number).pluck
+
+		render json: { institution: institution, account: account.routing_number }
 	end
 
 	def accounts
@@ -32,7 +41,7 @@ class Api::V1Controller < ApplicationController
 		end
 	end
 
-	def api_permitted_params
-		params.require(:details).permit(Categorizable.account_params)
+	def permitted_params
+		params.require(:account).permit(:format, Categorizable.account_details, Categorizable.institutions)
 	end
 end
