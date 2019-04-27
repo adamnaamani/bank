@@ -1,11 +1,9 @@
 import React, { Component, Fragment } from 'react';
-import axios from 'axios';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { getAccounts } from '../../actions/accounts';
 import Loader from '../loader/Content'
-import moment from 'moment';
 
 class List extends Component {
 	static propTypes = {
@@ -54,23 +52,25 @@ class List extends Component {
 					<div className="input-group p-1 mb-4">
 					  <input type="text" className="form-control" placeholder="Search for anything..." />
 					</div>
-					<table className="table">
-						<thead>
-							<tr>
-								<th>Actions</th>
-								<th>Account Number</th>
-								<th>Routing Number</th>
-								<th>Bank Name</th>
-								<th>Bank Nickname</th>
-								<th>Bank Address</th>
-								<th>Bank Location</th>
-								<th>Created At</th>
-							</tr>
-						</thead>
-						<tbody>
-							{accountsList}
-						</tbody>
-					</table>
+					<div className="table-responsive">
+						<table className="table">
+							<thead>
+								<tr>
+									<th>Actions</th>
+									<th>Account Number</th>
+									<th>Routing Number</th>
+									<th>Bank Name</th>
+									<th>Bank Nickname</th>
+									<th>Bank Address</th>
+									<th>Bank Location</th>
+									<th>Created At</th>
+								</tr>
+							</thead>
+							<tbody>
+								{accountsList}
+							</tbody>
+						</table>
+					</div>
 				</Fragment>
 			)
 		} else {
@@ -84,7 +84,6 @@ class List extends Component {
 function mapStateToProps(state) {
 	return {
 		loaded: state.accounts.loaded,
-		user: state.accounts.user,
 		accounts: state.accounts.accounts
 	}
 }

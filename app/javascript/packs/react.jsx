@@ -27,11 +27,9 @@ class App extends Component {
 					<Header />
 					<Switch>
 						<Fragment>
-							<div className="container-fluid p-4">
-								<div className="table-responsive">
-									<Route exact path="/" component={List} />				
-									<Route exact path="/new" component={Form} />
-								</div>
+							<div className="container py-4">
+								<Route exact path="/" component={List} />				
+								<Route exact path="/new" component={Form} />
 							</div>
 						</Fragment>					
 					</Switch>
