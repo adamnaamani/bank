@@ -74,7 +74,7 @@ html {
   text-size-adjust: 100%;
 }
 body {
-	border-top: 60px solid transparent;
+	border-top: 50px solid transparent;
 }
 body * {
   @include box_sizing;
@@ -131,27 +131,32 @@ i {
 	justify-content: center;
 	align-items: center; 		
 }
+.shadow-1 {
+}
+.shadow-2 {
+}
+.shadow-3 {
+}
 
 /* Bootstrap */
-.navbar-brand img {
-  display: inline-block;
-  vertical-align: middle;
-  &:first-child {
-  	margin: 0 6px 0 0;
-  }
-  &:last-child {
-		opacity: 0.75;
-  }
+.navbar-brand {
+	display: block;
+	img {
+	  display: inline-block;
+	  vertical-align: middle;
+	  &:first-child {
+	  	margin: 0 6px 0 0;
+	  }
+	}
 }
 .navbar {
+	z-index: 1;
 	position: fixed; top: 0; left: 0; right: 0;
 	box-shadow: 0 1px 0 rgba(0,0,0,0.08);
 }
 .container {
-	overflow: hidden;
 }
 .table {
-	overflow: scroll;
 	font-size: 15px;
 	td, th {
 		text-overflow: ellipsis;
@@ -159,4 +164,14 @@ i {
 		overflow: scroll;
 		vertical-align: middle;
 	}
+}
+
+/* Icons */
+.far {
+	display: inline-block;
+	margin: 0 5px 0 0;
+}
+
+/* Bank */
+#main {
 }

@@ -15,7 +15,7 @@ class List extends Component {
 	componentDidMount() {
 		setTimeout(_=> {
 			this.props.getAccounts()
-		}, 2000)
+		}, 1000)
 	}		
 	onChange = e => {
     this.setState({ [e.target.name]: e.target.value })
@@ -38,7 +38,7 @@ class List extends Component {
 						<button className="btn btn-outline-danger mx-1" onClick={this.deleteAccount}>Delete</button>
 					</td>				
 					<td><input type="text" className="form-control-plaintext" value={account.account_number} onChange={this.onChange} readOnly /></td>
-					<td><input type="text" className="form-control-plaintext" value={account.routing_number} onChange={this.onChange} readOnly /></td>
+					<td><input type="text" className="form-control-plaintext" value={account.routing_number} onChange={this.onChange} maxLength="9" readOnly /></td>
 					<td><input type="text" className="form-control-plaintext" value={account.bank_name} onChange={this.onChange} readOnly /></td>
 					<td><input type="text" className="form-control-plaintext" value={account.bank_nickname} onChange={this.onChange} readOnly /></td>
 					<td><input type="text" className="form-control-plaintext" value={account.bank_address} onChange={this.onChange} readOnly /></td>
@@ -49,47 +49,27 @@ class List extends Component {
 		})
 		if(this.props.loaded == true) {
 			return (
-				<div className="container-fluid">
-			    <div class="row">
-		        <div class="col-3 px-1 position-fixed" id="sticky-sidebar">
-		        	<p>Sidebar</p>
-		        </div>
-		        <div class="col offset-3" id="main">
-		          <h1 className="display-4">Accounts</h1>
-							<table className="table">
-								<thead>
-									<tr>
-										<th>Actions</th>
-										<th>Account Number</th>
-										<th>Routing Number</th>
-										<th>Bank Name</th>
-										<th>Bank Nickname</th>
-										<th>Bank Address</th>
-										<th>Bank Location</th>
-										<th>Created At</th>
-									</tr>
-								</thead>
-								<tbody>
-									{accountsList}
-								</tbody>
-							</table>
-		        </div>
-			    </div>				
-				</div>
+				<table className="table">
+					<thead>
+						<tr>
+							<th>Actions</th>
+							<th>Account Number</th>
+							<th>Routing Number</th>
+							<th>Bank Name</th>
+							<th>Bank Nickname</th>
+							<th>Bank Address</th>
+							<th>Bank Location</th>
+							<th>Created At</th>
+						</tr>
+					</thead>
+					<tbody>
+						{accountsList}
+					</tbody>
+				</table>
 			)
 		} else {
 			return (
-				<div className="container-fluid">
-			    <div class="row">
-		        <div class="col-3 px-1 position-fixed" id="sticky-sidebar">
-		        	<p>Sidebar</p>
-		        </div>
-		        <div class="col offset-3" id="main">
-							<h1 className="display-4">Accounts</h1>
-							<Loader />
-						</div>
-					</div>
-				</div>
+				<Loader />
 			)
 		}
 	}

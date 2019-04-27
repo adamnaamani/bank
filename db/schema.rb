@@ -10,20 +10,55 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_25_200927) do
+ActiveRecord::Schema.define(version: 2019_04_26_233537) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "accounts", force: :cascade do |t|
     t.integer "account_number"
-    t.integer "routing_number"
+    t.string "routing_number"
     t.string "bank_name"
     t.string "bank_nickname"
     t.string "bank_address"
     t.string "bank_location"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "user_id"
+    t.bigint "institution_id"
+    t.index ["account_number"], name: "index_accounts_on_account_number", unique: true
+    t.index ["institution_id"], name: "index_accounts_on_institution_id"
+    t.index ["user_id"], name: "index_accounts_on_user_id"
   end
 
+  create_table "institutions", force: :cascade do |t|
+    t.string "routing_number"
+    t.string "bank_name"
+    t.string "bank_nickname"
+    t.string "bank_address"
+    t.string "bank_location"
+    t.string "zip_code"
+    t.string "phone_number"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "office_code"
+    t.string "city"
+    t.string "state"
+    t.index ["routing_number"], name: "index_institutions_on_routing_number", unique: true
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  end
+
+  add_foreign_key "accounts", "institutions"
+  add_foreign_key "accounts", "users"
 end
