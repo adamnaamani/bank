@@ -10,9 +10,9 @@ class Api::V1Controller < ApplicationController
 
 	def get_institutions
 		account = JSON.parse(params[:account], object_class: OpenStruct)
-		institution = Institution.where(routing_number: account.routing_number).pluck
+		institutions = Institution.where(routing_number: account.routing_number).first
 
-		render json: { institution: institution, account: account.routing_number }
+		render json: { institutions: institutions }
 	end
 
 	def accounts
