@@ -10,6 +10,7 @@ gem 'devise', '~> 4.6.2'
 gem 'webpacker', '~> 4.0'
 gem 'jbuilder', '~> 2.5'
 gem 'redis', '~> 4.0'
+gem 'jwt', require: false
 gem 'bootsnap', '>= 1.4.2', require: false
 gem 'nokogiri', require: false
 
