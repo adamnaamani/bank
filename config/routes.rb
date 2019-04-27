@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
 	root 'pages#index'
 
+	devise_for :users
 	resources :pages
 	defaults format: :json do
 		namespace :api do 

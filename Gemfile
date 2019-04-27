@@ -11,6 +11,7 @@ gem 'webpacker', '~> 4.0'
 gem 'jbuilder', '~> 2.5'
 gem 'redis', '~> 4.0'
 gem 'bootsnap', '>= 1.4.2', require: false
+gem 'nokogiri', require: false
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
