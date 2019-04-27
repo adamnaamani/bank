@@ -4,14 +4,18 @@ import { Provider, connect } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import store from '../store';
+import { getUser } from '../actions/auth';
 import 'jquery/dist/jquery.min.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/Layout.scss';
+
 import Header from '../components/layout/Header'
-import Body from '../components/layout/Body'
+import List from '../components/accounts/List'
+import Form from '../components/accounts/Form'
 
 class App extends Component {
 	componentDidMount() {
+		store.dispatch(getUser())
 		setTimeout(_=> {
 			document.body.style.display = 'block';
 		}, 300)
@@ -22,7 +26,14 @@ class App extends Component {
 				<Router>
 					<Header />
 					<Switch>
-						<Route exact path="/" component={Body} />
+						<Fragment>
+							<div className="container-fluid p-4">
+								<div className="table-responsive">
+									<Route exact path="/" component={List} />				
+									<Route exact path="/new" component={Form} />
+								</div>
+							</div>
+						</Fragment>					
 					</Switch>
 				</Router>
 			</Provider>

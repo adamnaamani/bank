@@ -8,6 +8,7 @@ export class Form extends Component {
   render() {
     return (
 			<form>
+				<h1 className="display-4 mb-4">New Account</h1>
 			  <div className="form-group row">
 			    <label htmlFor="account-number" className="col-sm-2 col-form-label">Account Number</label>
 			    <div className="col-sm-10">

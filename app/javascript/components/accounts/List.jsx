@@ -49,23 +49,29 @@ class List extends Component {
 		})
 		if(this.props.loaded == true) {
 			return (
-				<table className="table">
-					<thead>
-						<tr>
-							<th>Actions</th>
-							<th>Account Number</th>
-							<th>Routing Number</th>
-							<th>Bank Name</th>
-							<th>Bank Nickname</th>
-							<th>Bank Address</th>
-							<th>Bank Location</th>
-							<th>Created At</th>
-						</tr>
-					</thead>
-					<tbody>
-						{accountsList}
-					</tbody>
-				</table>
+				<Fragment>
+					<h1 className="display-4 mb-4">Accounts</h1>
+					<div className="input-group p-1 mb-4">
+					  <input type="text" className="form-control" placeholder="Search for anything..." />
+					</div>
+					<table className="table">
+						<thead>
+							<tr>
+								<th>Actions</th>
+								<th>Account Number</th>
+								<th>Routing Number</th>
+								<th>Bank Name</th>
+								<th>Bank Nickname</th>
+								<th>Bank Address</th>
+								<th>Bank Location</th>
+								<th>Created At</th>
+							</tr>
+						</thead>
+						<tbody>
+							{accountsList}
+						</tbody>
+					</table>
+				</Fragment>
 			)
 		} else {
 			return (
@@ -78,6 +84,7 @@ class List extends Component {
 function mapStateToProps(state) {
 	return {
 		loaded: state.accounts.loaded,
+		user: state.accounts.user,
 		accounts: state.accounts.accounts
 	}
 }

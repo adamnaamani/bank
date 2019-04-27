@@ -1,5 +1,10 @@
 class Api::V1Controller < ApplicationController
 	include Categorizable
+	before_action :authenticate
+
+	def get_user
+		render json: { user: @user }
+	end
 
 	def accounts
 		@accounts = Account.all
@@ -20,6 +25,12 @@ class Api::V1Controller < ApplicationController
 	end
 
 	private
+	
+	def authenticate
+		if user_signed_in?
+			@user = current_user
+		end
+	end
 
 	def api_permitted_params
 		params.require(:details).permit(Categorizable.account_params)

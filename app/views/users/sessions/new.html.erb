@@ -1,39 +1,35 @@
-<div class="container">
-	<h2 class="h2 m-2">Sign in</h2>
+<div class="container p-5">
+	<h2 class="h2 my-4">Sign In</h2>
 	<div>
 		<%= form_for(resource, as: resource_name, url: session_path(resource_name), html: {class: 'form-horizontal'}) do |f| %>
 			<div class="form-group">
-				<%= f.label :email, class: "col-sm-2 control-label" %>
-				<div class="col-sm-6">
-					<%= f.email_field :email, autofocus: true , class: "form-control" %>
+				<div class="input-group">
+					<%= f.email_field :email, autofocus: true , class: "form-control", placeholder: "Email Address" %>
 				</div>
 			</div>
 
 			<div class="form-group">
-				<%= f.label :password, class: "col-sm-2 control-label" %>
-				<div class="col-sm-6">
-					<%= f.password_field :password, autocomplete: "off", class: "form-control" %>
+				<div class="input-group">
+					<%= f.password_field :password, autocomplete: "off", class: "form-control", placeholder: "Password" %>
 				</div>
 			</div>
 
 			<% if devise_mapping.rememberable? -%>
 			<div class="form-group">
-				<div class="col-sm-6 col-sm-offset-2">
-					<%= f.check_box :remember_me %> <%= f.label :remember_me %>
+				<div class="input-group col-sm-offset-2">
+					<%= f.check_box :remember_me %> <%= f.label :remember_me, class: "ml-2" %>
 				</div>
 			</div>
 			<% end -%>
 
 			<div class="form-group">
-				<div class="col-sm-6 col-sm-offset-2">
+				<div class="input-group col-sm-offset-2">
 					<%= f.submit "Sign in", class: 'btn btn-primary' %>
 				</div>
 			</div>
 
 			<div class="form-group">
-				<div class="col-sm-6 col-sm-offset-2">
-					<%= render "users/shared/links" %>
-				</div>
+				<%= render "users/shared/links" %>
 			</div>
 		<% end %>
 	</div>
