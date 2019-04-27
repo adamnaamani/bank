@@ -8,7 +8,6 @@ export const getInstitutions = account => (dispatch, getState) => {
 			account
   	}
   }).then(response => {
-  	console.log(response)
     dispatch({
       type: GET_INSTITUTIONS,
       payload: response.data.institutions
