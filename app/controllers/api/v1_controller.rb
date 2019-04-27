@@ -1,7 +1,6 @@
 class Api::V1Controller < ApplicationController
 	include Categorizable
 	require 'ostruct'
-
 	before_action :authenticate
 
 	def get_user

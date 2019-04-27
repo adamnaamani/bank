@@ -1,35 +1,37 @@
 <div class="container p-5">
-	<h2 class="h2 my-4">Sign up</h2>	
-	<div>
-		<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: {class: 'form-horizontal'}) do |f| %>
-			<%= devise_error_messages! %>
-			<div class="form-group">
-				<div class="input-group">
-					<%= f.email_field :email, class: "form-control", placeholder: "Email Address" %>
+	<div class="row justify-content-md-center">
+		<div class="col-md-6">	
+			<h2 class="h2 my-4">Sign up</h2>		
+			<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: {class: 'form-horizontal'}) do |f| %>
+				<%= devise_error_messages! %>
+				<div class="form-group">
+					<div class="input-group">
+						<%= f.email_field :email, class: "form-control", placeholder: "Email Address" %>
+					</div>
 				</div>
-			</div>
 
-			<div class="form-group">
-				<div class="input-group">
-					<%= f.password_field :password, autocomplete: "off", class: "form-control", placeholder: "Password" %>
+				<div class="form-group">
+					<div class="input-group">
+						<%= f.password_field :password, autocomplete: "off", class: "form-control", placeholder: "Password" %>
+					</div>
 				</div>
-			</div>
 
-			<div class="form-group">
-				<div class="input-group">
-					<%= f.password_field :password_confirmation, autocomplete: "off", class: "form-control", placeholder: "Password Confirmation" %>
+				<div class="form-group">
+					<div class="input-group">
+						<%= f.password_field :password_confirmation, autocomplete: "off", class: "form-control", placeholder: "Password Confirmation" %>
+					</div>
 				</div>
-			</div>
 
-			<div class="form-group">
-				<div class="col-sm-offset-2 input-group">
-					<%= f.submit "Sign up", class: "btn btn-primary" %>
+				<div class="form-group">
+					<div class="col-sm-offset-2 input-group">
+						<%= f.submit "Sign up", class: "btn btn-primary" %>
+					</div>
 				</div>
-			</div>
 
-			<div class="form-group">
-				<%= render "users/shared/links" %>
-			</div>
-		<% end %>
+				<div class="form-group">
+					<%= render "users/shared/links" %>
+				</div>
+			<% end %>
+		</div>
 	</div>
 </div>

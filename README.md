@@ -7,6 +7,7 @@
 2. [Development](#development)
 3. [Javascript](#javascript)
 4. [Tasks](#tasks)
+5. [Mobile](#mobile)
 
 ## Stack
 * [Ruby 2.6.3](https://www.ruby-lang.org/en/)
@@ -30,3 +31,6 @@ yarn run dev
 
 ## Tasks
 * [Thor](http://whatisthor.com)
+
+## Mobile
+* Progressive Web App

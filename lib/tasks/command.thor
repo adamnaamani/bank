@@ -84,5 +84,21 @@ class Command < Thor
 			)
 
 		end
+	end
+
+	desc "accounts", "create accounts from institutions"
+	def accounts
+		Institution.limit(10).each_with_index do |institution, index|
+			account = Account.create!({
+				account_number: 1234567890 + index,
+				routing_number: institution.routing_number,
+				bank_name: institution.bank_name,
+				bank_address: institution.bank_address,
+				bank_location: institution.bank_location,
+				user_id: 1,
+				institution_id: institution.id
+			})
+			puts "Account #{account.account_number} created."
+		end
 	end 
 end
