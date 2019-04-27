@@ -1,7 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { getUser } from '../../actions/auth';
+
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import Container from 'react-bootstrap/Container';
@@ -12,6 +15,20 @@ import Form from 'react-bootstrap/Form';
 
 export class Header extends Component {
   render() {
+  	const { authenticated, user } = this.props.auth
+		const userLinks = (
+			<Fragment>
+				<Link to="/new" className="nav-link text-primary">Create New</Link>
+				<Link to="/" className="nav-link">Accounts</Link>
+	      <Nav.Link href="/users/sign_out">Logout</Nav.Link>
+      </Fragment>
+		)
+		const guestLinks = (
+			<Fragment>
+	      <Nav.Link href="/users/sign_in">Login</Nav.Link>
+	      <Nav.Link href="/users/sign_up">Register</Nav.Link>
+      </Fragment>
+		)
     return (
 			<Navbar collapseOnSelect expand="lg" bg="light" variant="light">
 			  <Navbar.Brand href="/">
@@ -20,13 +37,9 @@ export class Header extends Component {
 			  </Navbar.Brand>
 			  <Navbar.Toggle aria-controls="responsive-navbar-nav" />
 			  <Navbar.Collapse id="responsive-navbar-nav">
-			    <Nav className="mr-auto">
-			      <Nav.Link href="/">Accounts</Nav.Link>
-			    </Nav>
+			  	<Nav className="mr-auto"/>
 			    <Nav>
-			      <Nav.Link href="/login">Login</Nav.Link>
-			      <Nav.Link href="/register">Register</Nav.Link>
-			      <Link to="/new" className="btn btn-primary nav-link text-white">New Account</Link>
+			    	{authenticated ? userLinks : guestLinks}
 			    </Nav>
 			  </Navbar.Collapse>
 			</Navbar>
@@ -34,4 +47,16 @@ export class Header extends Component {
   }
 }
 
-export default connect()(Header);
+function mapStateToProps(state) {
+	return {
+		auth: state.auth
+	}
+}
+
+function mapDispatchToProps(dispatch) {
+	return {
+		getUser: bindActionCreators(getUser, dispatch)
+	}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

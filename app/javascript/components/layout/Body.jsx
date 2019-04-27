@@ -13,7 +13,6 @@ export class Body extends Component {
 				<div className="table-responsive">
 					<List />
 				</div>
-				<Form />
 			</div>
     )
   }
