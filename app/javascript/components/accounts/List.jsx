@@ -96,6 +96,7 @@ class List extends Component {
 					<td><input type="text" className="form-control-plaintext text-truncate" name="account_number" value={account.account_number || ''} onChange={this.updateAccount.bind(this, account)} readOnly={this.state.readOnly} /></td>
 					<td><input type="text" className="form-control-plaintext text-truncate" name="routing_number" value={account.routing_number || ''} onChange={this.updateAccount.bind(this, account)} maxLength="9" readOnly={this.state.readOnly} /></td>
 					<td><input type="text" className="form-control-plaintext text-truncate" name="bank_name" value={account.bank_name || ''} onChange={this.updateAccount.bind(this, account)} readOnly={this.state.readOnly} /></td>
+					<td><input type="text" className="form-control-plaintext text-truncate" name="bank_nickname" value={account.bank_nickname || ''} onChange={this.updateAccount.bind(this, account)} readOnly={this.state.readOnly} /></td>
 					<td><input type="text" className="form-control-plaintext text-truncate" name="bank_address" value={account.bank_address || ''} onChange={this.updateAccount.bind(this, account)} readOnly={this.state.readOnly} /></td>
 					<td><input type="text" className="form-control-plaintext text-truncate" name="bank_location" value={account.bank_location || ''} onChange={this.updateAccount.bind(this, account)} readOnly={this.state.readOnly} /></td>
 					<td><input type="text" className="form-control-plaintext text-truncate" name="created_at" value={`${moment(account.created_at).format('MM/DD/YYYY')}`} onChange={this.updateAccount.bind(this, account)} readOnly={this.state.readOnly} /></td>
@@ -117,6 +118,7 @@ class List extends Component {
 									<th>Account Number</th>
 									<th>Routing Number</th>
 									<th>Bank Name</th>
+									<th>Bank Nickname</th>
 									<th>Bank Address</th>
 									<th>Bank Location</th>
 									<th>Created</th>

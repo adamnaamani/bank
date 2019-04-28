@@ -15,7 +15,7 @@ class Api::V1Controller < ApplicationController
 	end
 
 	def accounts
-		@accounts = Account.where(user_id: @user.id)
+		@accounts = Account.where(user_id: @user.id).order(created_at: :desc)
 
 		render json: { accounts: @accounts }
 	end

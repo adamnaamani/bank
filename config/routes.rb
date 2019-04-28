@@ -18,7 +18,7 @@ Rails.application.routes.draw do
 					get :accounts
 					post :add_account
 					post :update_account
-					post :delete_account
+					delete :delete_account
 				end
 			end
 		end
