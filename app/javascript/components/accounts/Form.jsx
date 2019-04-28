@@ -18,6 +18,7 @@ class Form extends Component {
 			disabled: false,
 			validated: false,
 			errors: [],
+			institutions: [],
 			account_number: '',
 			routing_number: '',
 			bank_name: '',
@@ -28,6 +29,11 @@ class Form extends Component {
   }
   componentDidMount() {
   }
+	componentDidUpdate(prevProps, prevState) {
+	  if(prevProps.institutions !== this.props.institutions) {
+	  	this.setState(this.props.institutions);
+	  }
+	}	  
 	onChange = e => {
 		return new Promise(resolve => {
 	    this.setState({ [e.target.name]: e.target.value }, _=> {
@@ -39,9 +45,6 @@ class Form extends Component {
   	this.setState({...this.initialState});
   	this.onChange(e).then(_=> {  		
 	  	this.props.getInstitutions(this.state);
-	  	setTimeout(_=> {
-	  		this.setState(this.props.institutions);
-	  	}, 100)
   	});
   }  
 	validateForm = e => {
