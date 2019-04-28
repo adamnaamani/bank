@@ -34,7 +34,11 @@ export const updateAccount = account => (dispatch, getState) => {
 
 // DELETE ACCOUNT
 export const deleteAccount = id => (dispatch, getState) => {
-  axios.post("/api/v1/delete_account", { id: id }).then(response => {
+  axios.delete("/api/v1/delete_account", {
+  	params: { 
+  		id: id 
+  	}
+  }).then(response => {
     dispatch({
       type: DELETE_ACCOUNT,
       payload: id
