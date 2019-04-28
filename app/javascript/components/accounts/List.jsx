@@ -20,7 +20,7 @@ class List extends Component {
     this.state = {
 			search: '',
 			readOnly: false,
-			accounts: this.props.accounts			
+			accounts: this.props.accounts || []			
 		}
 		this.onChange = this.onChange.bind(this);
   }	
@@ -35,7 +35,7 @@ class List extends Component {
 	  }
 	}		
 	onChange = e => {
-		return new Promise(resolve => {
+		return new Promise(resolve => {			
 			this.setState({ [e.target.name]: e.target.value }, _=> {
 				resolve()
 			})
@@ -46,9 +46,14 @@ class List extends Component {
   	$('input.form-control-plaintext').toggleClass('form-control', this.state.readOnly );  	
   }
   updateAccount = (account, e) => {
-  	this.onChange(e).then(_=> {
-  		this.props.updateAccount(account)
-  	})
+  	e.persist();
+		this.setState(prevState => ({
+		  accounts: prevState.accounts.map(obj => (obj.id === account.id ? Object.assign(obj, {[e.target.name]: e.target.value }) : obj))
+		}), _=> {
+			let accountDetails = this.state.accounts.find(obj => obj.id === account.id)
+			this.props.updateAccount(accountDetails)
+		});
+  	
   }
   deleteAccount = e => {
   	if(window.confirm('Are you sure you want to delete this account?')) {
@@ -88,12 +93,12 @@ class List extends Component {
 			return (
 				<tr key={key}>
 					<td><button className="btn" onClick={this.deleteAccount.bind(this, account.id)}><i className="far fa-trash-alt"></i></button></td>				
-					<td><input type="text" className="form-control-plaintext text-truncate" value={account.account_number || ''} onChange={this.updateAccount.bind(this, account)} readOnly={this.state.readOnly} /></td>
-					<td><input type="text" className="form-control-plaintext text-truncate" value={account.routing_number || ''} onChange={this.updateAccount.bind(this, account)} maxLength="9" readOnly={this.state.readOnly} /></td>
-					<td><input type="text" className="form-control-plaintext text-truncate" value={account.bank_name || ''} onChange={this.updateAccount.bind(this, account)} readOnly={this.state.readOnly} /></td>
-					<td><input type="text" className="form-control-plaintext text-truncate" value={account.bank_address || ''} onChange={this.updateAccount.bind(this, account)} readOnly={this.state.readOnly} /></td>
-					<td><input type="text" className="form-control-plaintext text-truncate" value={account.bank_location || ''} onChange={this.updateAccount.bind(this, account)} readOnly={this.state.readOnly} /></td>
-					<td><input type="text" className="form-control-plaintext text-truncate" value={`${moment(account.created_at).format('MM/DD/YYYY')}`} onChange={this.updateAccount.bind(this, account)} readOnly={this.state.readOnly} /></td>
+					<td><input type="text" className="form-control-plaintext text-truncate" name="account_number" value={account.account_number || ''} onChange={this.updateAccount.bind(this, account)} readOnly={this.state.readOnly} /></td>
+					<td><input type="text" className="form-control-plaintext text-truncate" name="routing_number" value={account.routing_number || ''} onChange={this.updateAccount.bind(this, account)} maxLength="9" readOnly={this.state.readOnly} /></td>
+					<td><input type="text" className="form-control-plaintext text-truncate" name="bank_name" value={account.bank_name || ''} onChange={this.updateAccount.bind(this, account)} readOnly={this.state.readOnly} /></td>
+					<td><input type="text" className="form-control-plaintext text-truncate" name="bank_address" value={account.bank_address || ''} onChange={this.updateAccount.bind(this, account)} readOnly={this.state.readOnly} /></td>
+					<td><input type="text" className="form-control-plaintext text-truncate" name="bank_location" value={account.bank_location || ''} onChange={this.updateAccount.bind(this, account)} readOnly={this.state.readOnly} /></td>
+					<td><input type="text" className="form-control-plaintext text-truncate" name="created_at" value={`${moment(account.created_at).format('MM/DD/YYYY')}`} onChange={this.updateAccount.bind(this, account)} readOnly={this.state.readOnly} /></td>
 				</tr>
 			)
 		})
