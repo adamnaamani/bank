@@ -14,17 +14,18 @@ export const getAccounts = () => (dispatch, getState) => {
 // ADD ACCOUNT
 export const addAccount = account => (dispatch, getState) => {
   axios.post("/api/v1/add_account", account).then(response => {
-    dispatch({
-      type: ADD_ACCOUNT,
-      payload: response.data
-    })
+  	if(response.status == 'ok') {
+	    dispatch({
+	      type: ADD_ACCOUNT,
+	      payload: response.data
+	    })
+  	}
   }).catch(error => console.log(error))
 }
 
 // UPDATE ACCOUNT
 export const updateAccount = account => (dispatch, getState) => {
   axios.post("/api/v1/update_account", account).then(response => {
-  	console.log(response)
     dispatch({
       type: UPDATE_ACCOUNT,
       payload: response.data

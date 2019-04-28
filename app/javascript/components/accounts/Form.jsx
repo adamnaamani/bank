@@ -69,6 +69,7 @@ class Form extends Component {
 			if(this.state.validated == true) {
 				this.setState({disabled: true})
 				this.props.addAccount(this.state)
+				// TODO - Check for existing Account
 				setTimeout(_=> { window.location.href = '/' }, 1500)
 			}
 		})
