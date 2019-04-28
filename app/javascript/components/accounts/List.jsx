@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import { getAccounts, updateAccount, deleteAccount } from '../../actions/accounts';
 import Loader from '../loader/Content';
 import moment from 'moment';
-import $ from 'jquery';
 
 class List extends Component {
 	static propTypes = {
@@ -53,7 +52,6 @@ class List extends Component {
 			let accountDetails = this.state.accounts.find(obj => obj.id === account.id)
 			this.props.updateAccount(accountDetails)
 		});
-  	
   }
   deleteAccount = e => {
   	if(window.confirm('Are you sure you want to delete this account?')) {
