@@ -1,8 +1,8 @@
 import React, { Component, Fragment } from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import { getAccounts, updateAccount, deleteAccount } from '../../actions/accounts';
 import Loader from '../loader/Content';
 import moment from 'moment';
