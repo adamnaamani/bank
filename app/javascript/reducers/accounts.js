@@ -2,6 +2,7 @@ import { GET_ACCOUNTS, ADD_ACCOUNT, UPDATE_ACCOUNT, DELETE_ACCOUNT } from "../ac
 
 const initialState = {
 	loaded: false,
+	saved: false,
 	accounts: []
 };
 
@@ -20,7 +21,8 @@ export default function(state = initialState, action) {
       }
     case UPDATE_ACCOUNT:
       return {
-      	...state
+      	...state,
+      	saved: true
       }            
     case DELETE_ACCOUNT:
       return {

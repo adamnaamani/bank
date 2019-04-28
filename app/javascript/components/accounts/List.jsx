@@ -84,6 +84,10 @@ class List extends Component {
 	}    
 	render() {
 		let { search, accounts } = this.state
+  	let { saved } = this.props
+  	let savedNotification = (
+  		<p className="text-success small align-middle">Saved!</p>
+  	)		
 		let noAccounts = (
 			<tr><td colSpan={7} className="text-center py-5"><Link to="/new" className="btn btn-outline-primary">Create An Account</Link></td></tr>
 		)		
@@ -136,7 +140,8 @@ class List extends Component {
 function mapStateToProps(state) {
 	return {
 		loaded: state.accounts.loaded,
-		accounts: state.accounts.accounts
+		accounts: state.accounts.accounts,
+		saved: state.accounts.saved
 	}
 }
 
