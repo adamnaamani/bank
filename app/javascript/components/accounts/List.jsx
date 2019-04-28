@@ -3,18 +3,24 @@ import { Link } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { getAccounts } from '../../actions/accounts';
-import Loader from '../loader/Content'
+import { getAccounts, updateAccount, deleteAccount } from '../../actions/accounts';
+import Loader from '../loader/Content';
+import moment from 'moment';
+import $ from 'jquery';
 
 class List extends Component {
 	static propTypes = {
 		accounts: PropTypes.array.isRequired,
-		getAccounts: PropTypes.func.isRequired
+		getAccounts: PropTypes.func.isRequired,
+		updateAccount: PropTypes.func.isRequired,
+		deleteAccount: PropTypes.func.isRequired		
 	}
 	constructor(props) {
 		super(props)
     this.state = {
-			search: ''
+			search: '',
+			readOnly: false,
+			accounts: []			
 		}
   }	
 	componentDidMount() {
@@ -29,12 +35,20 @@ class List extends Component {
 			})
 		})
   }
-  addAccount = e => {
+  editInputs = e => {
+  	this.setState(prevState => ({ readOnly: !prevState.readOnly }));
+  	$('input.form-control-plaintext').toggleClass('form-control', this.state.readOnly );  	
   }
-  editAccount = e => {
+  updateAccount = (id, e) => {
+  	this.onChange(e).then(_=> {
+  		this.props.updateAccount(id)
+  	})
   }
   deleteAccount = e => {
-  }
+  	if(window.confirm('Are you sure you want to delete this account?')) {
+  		this.props.deleteAccount(e) 
+  	}
+  }  
 	filterAccounts = e => {
 		this.onChange(e).then(_=> {
 			console.log(this.state)
@@ -42,28 +56,26 @@ class List extends Component {
 	}    
 	render() {
 		let { search } = this.state
-		let accountsList = this.props.accounts.map((account, key) => {
-			return (
-				<tr key={key}>
-					<td>
-						<button className="btn btn-outline-primary mx-1" onClick={this.editAccount}>Edit</button>
-						<button className="btn btn-outline-danger mx-1" onClick={this.deleteAccount}>Delete</button>
-					</td>				
-					<td><input type="text" className="form-control-plaintext" value={account.account_number || ''} onChange={this.onChange} readOnly /></td>
-					<td><input type="text" className="form-control-plaintext" value={account.routing_number || ''} onChange={this.onChange} maxLength="9" readOnly /></td>
-					<td><input type="text" className="form-control-plaintext" value={account.bank_name || ''} onChange={this.onChange} readOnly /></td>
-					<td><input type="text" className="form-control-plaintext" value={account.bank_address || ''} onChange={this.onChange} readOnly /></td>
-					<td><input type="text" className="form-control-plaintext" value={account.bank_location || ''} onChange={this.onChange} readOnly /></td>
-					<td><input type="text" className="form-control-plaintext" value={account.created_at || ''} onChange={this.onChange} readOnly /></td>
-				</tr>
-			)
-		})
 		let noAccounts = (
 			<tr>
 				<td colSpan={7} className="text-center py-5"><Link to="/new" className="btn btn-outline-primary">Create An Account</Link></td>
 			</tr>
 		)
 		if(this.props.loaded == true) {
+			let accountsList = this.props.accounts.map((account, key) => {
+				let created = `${moment(account.created_at).format('MM/DD/YYYY')}`
+				return (
+					<tr key={key}>
+						<td><button className="btn" onClick={this.deleteAccount.bind(this, account.id)}><i className="far fa-trash-alt"></i></button></td>				
+						<td><input type="text" className="form-control-plaintext" value={account.account_number || ''} onChange={this.updateAccount.bind(this, account.id)} readOnly={this.state.readOnly} /></td>
+						<td><input type="text" className="form-control-plaintext" value={account.routing_number || ''} onChange={this.updateAccount.bind(this, account.id)} maxLength="9" readOnly={this.state.readOnly} /></td>
+						<td><input type="text" className="form-control-plaintext" value={account.bank_name || ''} onChange={this.updateAccount.bind(this, account.id)} readOnly={this.state.readOnly} /></td>
+						<td><input type="text" className="form-control-plaintext" value={account.bank_address || ''} onChange={this.updateAccount.bind(this, account.id)} readOnly={this.state.readOnly} /></td>
+						<td><input type="text" className="form-control-plaintext" value={account.bank_location || ''} onChange={this.updateAccount.bind(this, account.id)} readOnly={this.state.readOnly} /></td>
+						<td><input type="text" className="form-control-plaintext" value={created} onChange={this.updateAccount.bind(this, account.id)} readOnly={this.state.readOnly} /></td>
+					</tr>
+				)
+			})			
 			return (
 				<Fragment>
 					<h1 className="display-4 mb-4">Accounts</h1>
@@ -80,7 +92,7 @@ class List extends Component {
 									<th>Bank Name</th>
 									<th>Bank Address</th>
 									<th>Bank Location</th>
-									<th>Created At</th>
+									<th>Created</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -107,7 +119,9 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
 	return {
-		getAccounts: bindActionCreators(getAccounts, dispatch)
+		getAccounts: bindActionCreators(getAccounts, dispatch),
+		updateAccount: bindActionCreators(updateAccount, dispatch),
+		deleteAccount: bindActionCreators(deleteAccount, dispatch),
 	}
 }
 

@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
 	root 'pages#index'
 	
+	get '/dashboard', to: 'pages#index'
 	get '/new', to: 'pages#index'
 
 	devise_for :users do
@@ -16,6 +17,7 @@ Rails.application.routes.draw do
 					get :get_institutions
 					get :accounts
 					post :add_account
+					post :update_account
 					post :delete_account
 				end
 			end
