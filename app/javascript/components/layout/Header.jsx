@@ -19,7 +19,6 @@ export class Header extends Component {
 		const userLinks = (
 			<Fragment>
 				<Link to="/new" className="nav-link text-primary">New Account</Link>
-				<Link to="/dashboard" className="nav-link">Dashboard</Link>
 				<Link to="/" className="nav-link">Accounts</Link>
 	      <Nav.Link href="/users/sign_out">Logout</Nav.Link>
       </Fragment>
