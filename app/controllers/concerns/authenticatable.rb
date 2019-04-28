@@ -5,7 +5,6 @@ module Authenticatable
   	include Tokenable
   	protect_from_forgery with: :exception
   	before_action :authenticate_user!
-  	before_action :retrieve_headers, :validate_request, only: [:add_account]
   end
 
   private
