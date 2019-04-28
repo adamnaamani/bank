@@ -2,12 +2,21 @@
 > A Ruby on Rails & ReactJS CRUD banking app, hosted on [Heroku](https://heroku.com).
 
 
+## Guests
+[Sign In](https://bank-rails-react.herokuapp.com/users/sign_in) to the guest account to take the app for a spin:
+```
+Email: guest@avail.co
+Password: password
+```
+
+
 ## Table of Contents
 1. [Stack](#stack)
 2. [Development](#development)
 3. [Javascript](#javascript)
 4. [Tasks](#tasks)
 5. [Mobile](#mobile)
+
 
 ## Stack
 * [Ruby 2.6.3](https://www.ruby-lang.org/en/)
