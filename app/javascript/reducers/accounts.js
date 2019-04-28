@@ -12,16 +12,16 @@ export default function(state = initialState, action) {
       	...state, 
       	accounts: action.payload, 
       	loaded: true
-      }
-    case UPDATE_ACCOUNT:
-      return {
-      	...state
       }  
     case ADD_ACCOUNT:
       return {
       	...state, 
       	accounts: [...state.accounts, action.payload]
-      }      
+      }
+    case UPDATE_ACCOUNT:
+      return {
+      	...state
+      }            
     case DELETE_ACCOUNT:
       return {
       	...state, 

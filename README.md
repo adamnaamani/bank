@@ -42,4 +42,10 @@ yarn run dev
 * [Thor](http://whatisthor.com)
 
 ## Mobile
-* Progressive Web App
+* Progressive Web App: Add Bank app to homescreen for native-like mobile functionality. 
+```html
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="white">
+<meta name="apple-mobile-web-app-title" content="Bank">
+```

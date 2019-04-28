@@ -21,7 +21,7 @@ class Api::V1Controller < ApplicationController
 	end
 
 	def add_account
-		@account = current_user.accounts.create!(
+		@account = @user.accounts.create!(
     	account_number: params[:account_number],
 	    routing_number: params[:routing_number],
 	    bank_name: params[:bank_name],
