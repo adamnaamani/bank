@@ -20,13 +20,19 @@ class List extends Component {
     this.state = {
 			search: '',
 			readOnly: false,
-			accounts: []			
+			accounts: this.props.accounts			
 		}
+		this.onChange = this.onChange.bind(this);
   }	
 	componentDidMount() {
 		setTimeout(_=> {
 			this.props.getAccounts()
 		}, 1000)
+	}
+	componentDidUpdate(prevProps, prevState) {
+	  if(prevProps.accounts !== this.props.accounts) {
+	    this.setState({accounts: this.props.accounts}) 
+	  }
 	}		
 	onChange = e => {
 		return new Promise(resolve => {
@@ -39,9 +45,9 @@ class List extends Component {
   	this.setState(prevState => ({ readOnly: !prevState.readOnly }));
   	$('input.form-control-plaintext').toggleClass('form-control', this.state.readOnly );  	
   }
-  updateAccount = (id, e) => {
+  updateAccount = (account, e) => {
   	this.onChange(e).then(_=> {
-  		this.props.updateAccount(id)
+  		this.props.updateAccount(account)
   	})
   }
   deleteAccount = e => {
@@ -51,38 +57,54 @@ class List extends Component {
   }  
 	filterAccounts = e => {
 		this.onChange(e).then(_=> {
-			console.log(this.state)
+			const { accounts } = this.props;
+			const direction = 'asc';
+			const category = 'routing_number';
+
+			let filteredAccounts = accounts.filter((item, index) => {
+      	let items = [item.account_number, item.routing_number, item.bank_name, item.bank_address, item.bank_location, item.created_at].join(' ').toLowerCase()
+      	return items.indexOf(this.state.search.toLowerCase()) >= 0
+      }).sort((a,b) => {
+	      let modifier = 1
+	      if(direction === 'desc') modifier = -1
+	      if(!isNaN(a[category])) {
+		      if(parseInt(a[category]) < parseInt(b[category])) return -1 * modifier
+		      if(parseInt(a[category]) > parseInt(b[category])) return 1 * modifier					
+	      } else {
+		      if(a[category] < b[category]) return -1 * modifier
+		      if(a[category] > b[category]) return 1 * modifier	      	
+	      }
+	      return 0
+	    })
+	    this.setState({accounts: filteredAccounts}) 
 		})    
 	}    
 	render() {
-		let { search } = this.state
+		let { search, accounts } = this.state
 		let noAccounts = (
-			<tr>
-				<td colSpan={7} className="text-center py-5"><Link to="/new" className="btn btn-outline-primary">Create An Account</Link></td>
-			</tr>
-		)
-		if(this.props.loaded == true) {
-			let accountsList = this.props.accounts.map((account, key) => {
-				let created = `${moment(account.created_at).format('MM/DD/YYYY')}`
-				return (
-					<tr key={key}>
-						<td><button className="btn" onClick={this.deleteAccount.bind(this, account.id)}><i className="far fa-trash-alt"></i></button></td>				
-						<td><input type="text" className="form-control-plaintext" value={account.account_number || ''} onChange={this.updateAccount.bind(this, account.id)} readOnly={this.state.readOnly} /></td>
-						<td><input type="text" className="form-control-plaintext" value={account.routing_number || ''} onChange={this.updateAccount.bind(this, account.id)} maxLength="9" readOnly={this.state.readOnly} /></td>
-						<td><input type="text" className="form-control-plaintext" value={account.bank_name || ''} onChange={this.updateAccount.bind(this, account.id)} readOnly={this.state.readOnly} /></td>
-						<td><input type="text" className="form-control-plaintext" value={account.bank_address || ''} onChange={this.updateAccount.bind(this, account.id)} readOnly={this.state.readOnly} /></td>
-						<td><input type="text" className="form-control-plaintext" value={account.bank_location || ''} onChange={this.updateAccount.bind(this, account.id)} readOnly={this.state.readOnly} /></td>
-						<td><input type="text" className="form-control-plaintext" value={created} onChange={this.updateAccount.bind(this, account.id)} readOnly={this.state.readOnly} /></td>
-					</tr>
-				)
-			})			
+			<tr><td colSpan={7} className="text-center py-5"><Link to="/new" className="btn btn-outline-primary">Create An Account</Link></td></tr>
+		)		
+		let accountsList = accounts.map((account, key) => {
 			return (
-				<Fragment>
-					<h1 className="display-4 mb-4">Accounts</h1>
-					<div className="input-group p-1 mb-4">
-					  <input type="text" className="form-control" placeholder="Search for anything..." name="search" value={search} onChange={this.filterAccounts} />
-					</div>
-					<div className="table-responsive">
+				<tr key={key}>
+					<td><button className="btn" onClick={this.deleteAccount.bind(this, account.id)}><i className="far fa-trash-alt"></i></button></td>				
+					<td><input type="text" className="form-control-plaintext" value={account.account_number || ''} onChange={this.updateAccount.bind(this, account)} readOnly={this.state.readOnly} /></td>
+					<td><input type="text" className="form-control-plaintext" value={account.routing_number || ''} onChange={this.updateAccount.bind(this, account)} maxLength="9" readOnly={this.state.readOnly} /></td>
+					<td><input type="text" className="form-control-plaintext" value={account.bank_name || ''} onChange={this.updateAccount.bind(this, account)} readOnly={this.state.readOnly} /></td>
+					<td><input type="text" className="form-control-plaintext" value={account.bank_address || ''} onChange={this.updateAccount.bind(this, account)} readOnly={this.state.readOnly} /></td>
+					<td><input type="text" className="form-control-plaintext" value={account.bank_location || ''} onChange={this.updateAccount.bind(this, account)} readOnly={this.state.readOnly} /></td>
+					<td><input type="text" className="form-control-plaintext" value={`${moment(account.created_at).format('MM/DD/YYYY')}`} onChange={this.updateAccount.bind(this, account)} readOnly={this.state.readOnly} /></td>
+				</tr>
+			)
+		})
+		return (
+			<Fragment>
+				<h1 className="display-4 mb-4">Accounts</h1>
+				<div className="input-group p-1 mb-4">
+				  <input type="text" className="form-control" placeholder="Search for anything..." name="search" value={search} onChange={this.filterAccounts} />
+				</div>
+				<div className="table-responsive">
+					{this.props.loaded == false ? (<Loader />) : (
 						<table className="table">
 							<thead>
 								<tr>
@@ -99,14 +121,10 @@ class List extends Component {
 								{accountsList.length ? accountsList : noAccounts}
 							</tbody>
 						</table>
-					</div>
-				</Fragment>
-			)
-		} else {
-			return (
-				<Loader />
-			)
-		}
+					)}
+				</div>
+			</Fragment>
+		)
 	}
 }
 

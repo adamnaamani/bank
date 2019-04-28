@@ -10,6 +10,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/Layout.scss';
 
 import Header from '../components/layout/Header';
+import Footer from '../components/layout/Footer';
 import Dashboard from '../components/accounts/Dashboard';
 import List from '../components/accounts/List';
 import Form from '../components/accounts/Form';
@@ -31,7 +32,7 @@ class App extends Component {
 					<Header />
 					<Switch>
 						<Fragment>
-							<div className="container py-4">
+							<div className="container py-4 mb-5">
 								<Route exact path="/" component={List} />
 								<Route exact path="/dashboard" component={Dashboard} />
 								<Route exact path="/new" component={Form} />

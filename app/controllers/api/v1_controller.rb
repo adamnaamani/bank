@@ -15,19 +15,19 @@ class Api::V1Controller < ApplicationController
 	end
 
 	def accounts
-		@accounts = Account.all
+		@accounts = Account.where(user_id: @user.id)
 
 		render json: { accounts: @accounts }
 	end
 
 	def add_account
 		@account = current_user.accounts.create!(
-    	account_number: permitted_params[:account_number],
-	    routing_number: permitted_params[:routing_number],
-	    bank_name: permitted_params[:bank_name],
-	    bank_nickname: permitted_params[:bank_nickname],
-	    bank_address: permitted_params[:bank_address],
-	    bank_location: permitted_params[:bank_location]
+    	account_number: params[:account_number],
+	    routing_number: params[:routing_number],
+	    bank_name: params[:bank_name],
+	    bank_nickname: params[:bank_nickname],
+	    bank_address: params[:bank_address],
+	    bank_location: params[:bank_location]
 	  )
 		if @account.persisted?
 			render json: { status: :ok, account: @account }
@@ -37,7 +37,7 @@ class Api::V1Controller < ApplicationController
 	end
 
 	def delete_account
-		account = Account.find_by(id: params[:id], user_id: current_user.id)
+		account = Account.find_by(id: params[:id], user_id: @user.id)
 		if account.present?
 			account.destroy
 			render json: { status: :ok }
@@ -47,21 +47,20 @@ class Api::V1Controller < ApplicationController
 	end
 
 	def update_account
-		render json: { params: params }
-		# account = Account.find_by(id: params[:id], user_id: current_user.id)
-		# if account.present?
-		# 	account.update(
-	 #    	account_number: params[:account_number],
-		#     routing_number: params[:routing_number],
-		#     bank_name: params[:bank_name],
-		#     bank_nickname: params[:bank_nickname],
-		#     bank_address: params[:bank_address],
-		#     bank_location: params[:bank_location]
-		# 	)
-		# 	render json: { status: :ok, account: account.to_json }
-		# else
-		# 	render json: { status: :conflict }
-		# end		
+		account = Account.find_by(id: params[:id], user_id: @user.id)
+		if account.present?
+			account.update(
+	    	account_number: params[:account_number],
+		    routing_number: params[:routing_number],
+		    bank_name: params[:bank_name],
+		    bank_nickname: params[:bank_nickname],
+		    bank_address: params[:bank_address],
+		    bank_location: params[:bank_location]
+			)
+			render json: { status: :ok, account: account.to_json }
+		else
+			render json: { status: :conflict }
+		end		
 	end
 
 	private
