@@ -24,6 +24,7 @@ export const addAccount = account => (dispatch, getState) => {
 // UPDATE ACCOUNT
 export const updateAccount = account => (dispatch, getState) => {
   axios.post("/api/v1/update_account", account).then(response => {
+  	console.log(response)
     dispatch({
       type: UPDATE_ACCOUNT,
       payload: response.data

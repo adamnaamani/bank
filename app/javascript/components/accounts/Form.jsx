@@ -3,6 +3,7 @@ import { Redirect } from 'react-router';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+
 import { getInstitutions } from '../../actions/institutions';
 import { addAccount } from '../../actions/accounts';
 
@@ -13,8 +14,10 @@ class Form extends Component {
 	constructor(props) {
 		super(props)
 		this.initialState = {
-			disabled: false,
 			readOnly: true,
+			disabled: false,
+			validated: false,
+			errors: [],
 			account_number: '',
 			routing_number: '',
 			bank_name: '',
@@ -43,15 +46,29 @@ class Form extends Component {
   }  
 	validateForm = e => {
 		e.preventDefault();
-		this.setState({disabled: true});
 		
-		this.submitForm();
+		if(!this.state.routing_number) {
+			this.setState(prevState => ({
+			  errors: [...prevState.errors, 'Routing Number must be 9 digits long.']
+			}))
+		} else if(!this.state.account_number) {
+			this.setState(prevState => ({
+			  errors: [...prevState.errors, 'Account Number must be max 10 digits long.']
+			}))
+		} else if(!this.state.bank_name) {
+			return
+		} else if(!this.state.bank_address) {
+			return
+		} else if(!this.state.bank_location) {
+			return
+		} else {
+			this.submitForm()
+		}
 	}
 	submitForm = e => {
+		this.setState({disabled: true});
 		this.props.addAccount(this.state)
-		setTimeout(_=> {
-			window.location.href = '/'
-		}, 1000)
+		setTimeout(_=> { window.location.href = '/' }, 1000)
 	}
   render() {
   	const { disabled, account_number, routing_number, bank_name, bank_address, bank_location } = this.state;
@@ -61,7 +78,7 @@ class Form extends Component {
 			  <div className="form-group row">
 			    <label htmlFor="routing-number" className="col-sm-2 col-form-label">Routing Number</label>
 			    <div className="col-sm-10">
-			    	<input type="text" maxLength={9} className="form-control" id="routing-number" placeholder="" name="routing_number" value={routing_number || ''} onChange={this.getInstitutions} />
+			    	<input type="text" maxLength={9} className="form-control" id="routing-number" placeholder="" name="routing_number" value={routing_number || ''} onChange={this.getInstitutions} required />
 			    	<small id="routing-help" className="small form-text text-muted mt-2">Must be a 9 digit number, e.g. 121143260.</small>
 			    </div>
 			  </div>				
