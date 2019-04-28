@@ -27,7 +27,8 @@ class Api::V1Controller < ApplicationController
 	    bank_name: params[:bank_name],
 	    bank_nickname: params[:bank_nickname],
 	    bank_address: params[:bank_address],
-	    bank_location: params[:bank_location]
+	    bank_location: params[:bank_location],
+	    institution_id: params[:id]
 	  )
 		if @account.persisted?
 			render json: { status: :ok, account: @account }
@@ -47,20 +48,21 @@ class Api::V1Controller < ApplicationController
 	end
 
 	def update_account
-		account = Account.find_by(id: params[:id], user_id: @user.id)
-		if account.present?
-			account.update(
-	    	account_number: params[:account_number],
-		    routing_number: params[:routing_number],
-		    bank_name: params[:bank_name],
-		    bank_nickname: params[:bank_nickname],
-		    bank_address: params[:bank_address],
-		    bank_location: params[:bank_location]
-			)
-			render json: { status: :ok, account: account.to_json }
-		else
-			render json: { status: :conflict }
-		end		
+		render json: { params: params }
+		# account = Account.find_by(id: params[:id], user_id: @user.id)
+		# if account.present?
+		# 	account.update(
+	 #    	account_number: params[:account_number],
+		#     routing_number: params[:routing_number],
+		#     bank_name: params[:bank_name],
+		#     bank_nickname: params[:bank_nickname],
+		#     bank_address: params[:bank_address],
+		#     bank_location: params[:bank_location]
+		# 	)
+		# 	render json: { status: :ok, account: account.to_json }
+		# else
+		# 	render json: { status: :conflict }
+		# end		
 	end
 
 	private

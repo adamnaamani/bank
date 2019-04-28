@@ -1,3 +1,5 @@
 class Institution < ApplicationRecord
-	validates :routing_number, presence: true, uniqueness: true
+	has_many :accounts
+
+  validates :routing_number, presence: true, uniqueness: true, length: { maximum: 9 }
 end

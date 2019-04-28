@@ -1,11 +1,11 @@
 import React, { Component, Fragment } from 'react';
 import ReactDOM from 'react-dom';
-import { Provider, connect } from 'react-redux';
-import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { Provider, connect } from 'react-redux';
+import { getUser } from '../actions/auth';
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import axios from 'axios';
-import store from '../store';
-import { getUser } from '../actions/auth'; 
+import store from '../store'; 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/Layout.scss';
 
@@ -39,6 +39,7 @@ class App extends Component {
 							</div>
 						</Fragment>					
 					</Switch>
+					<Footer />
 				</Router>
 			</Provider>
 		)
@@ -46,5 +47,5 @@ class App extends Component {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  ReactDOM.render(<App />, document.body.appendChild(document.createElement('div')));
+  ReactDOM.render(<App />, document.getElementById('app'));
 })
