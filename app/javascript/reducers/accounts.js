@@ -1,8 +1,9 @@
-import { GET_ACCOUNTS, ADD_ACCOUNT, UPDATE_ACCOUNT, DELETE_ACCOUNT } from "../actions/types";
+import { GET_ACCOUNTS, ADD_ACCOUNT, UPDATE_ACCOUNT, DELETE_ACCOUNT, GET_ERRORS } from "../actions/types";
 
 const initialState = {
 	loaded: false,
 	saved: false,
+	errors: [],
 	accounts: []
 };
 
@@ -29,6 +30,11 @@ export default function(state = initialState, action) {
       	...state, 
       	accounts: state.accounts.filter(account => account.id !== action.payload)
       }
+    case GET_ERRORS:
+    	return {
+    		...state,
+    		errors: action.payload
+    	}  
     default:
       return state;
   }

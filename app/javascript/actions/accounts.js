@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GET_ACCOUNTS, ADD_ACCOUNT, UPDATE_ACCOUNT, DELETE_ACCOUNT } from './types';
+import { GET_ACCOUNTS, ADD_ACCOUNT, UPDATE_ACCOUNT, DELETE_ACCOUNT, GET_ERRORS } from './types';
 
 // GET ACCOUNTS
 export const getAccounts = () => (dispatch, getState) => {
@@ -20,7 +20,13 @@ export const addAccount = account => (dispatch, getState) => {
 	      payload: response.data
 	    })
   	}
-  }).catch(error => console.log(error))
+  	else {
+	  	dispatch({
+	  		type: GET_ERRORS,
+	  		payload: response.data
+	  	})  		
+  	}
+  })
 }
 
 // UPDATE ACCOUNT
