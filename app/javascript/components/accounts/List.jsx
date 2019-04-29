@@ -39,6 +39,7 @@ class List extends Component {
 	onChange = e => {
 		return new Promise(resolve => {			
 			this.setState({ [e.target.name]: e.target.value }, _=> {
+				this.filterAccounts()
 				resolve()
 			})
 		})
@@ -62,7 +63,7 @@ class List extends Component {
   	}
   }  
 	filterAccounts = e => {
-		let { accounts } = this.state;
+		let { accounts } = this.props;
 		let { category, direction } = this.state.sort;
 
 		let filteredAccounts = accounts.filter((item, index) => {
@@ -133,7 +134,7 @@ class List extends Component {
 			<Fragment>
 				<h1 className="display-4 mb-4">Accounts</h1>
 				<div className="input-group p-1 mb-4">
-				  <input type="text" className="form-control" placeholder="Search for anything..." name="search" value={search} onChange={this.filterAccounts} />
+				  <input type="text" className="form-control" placeholder="Search for anything..." name="search" value={search} onChange={this.onChange} />
 				</div>
 				<div className="table-responsive">
 					{this.props.loaded == false ? (<Loader />) : (
