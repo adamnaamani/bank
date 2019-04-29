@@ -19,6 +19,9 @@ class List extends Component {
     this.state = {
 			search: '',
 			readOnly: false,
+			sort: {
+				category: 'created_at', direction: 'desc'
+			},			
 			accounts: this.props.accounts || []			
 		}
 		this.onChange = this.onChange.bind(this);
@@ -59,31 +62,47 @@ class List extends Component {
   	}
   }  
 	filterAccounts = e => {
-		this.onChange(e).then(_=> {
-			const { accounts } = this.props;
-			const direction = 'asc';
-			const category = 'routing_number';
+		let { accounts } = this.state;
+		let { category, direction } = this.state.sort;
 
-			let filteredAccounts = accounts.filter((item, index) => {
-      	let items = [item.account_number, item.routing_number, item.bank_name, item.bank_address, item.bank_location, item.created_at].join(' ').toLowerCase()
-      	return items.indexOf(this.state.search.toLowerCase()) >= 0
-      }).sort((a,b) => {
-	      let modifier = 1
-	      if(direction === 'desc') modifier = -1
-	      if(!isNaN(a[category])) {
-		      if(parseInt(a[category]) < parseInt(b[category])) return -1 * modifier
-		      if(parseInt(a[category]) > parseInt(b[category])) return 1 * modifier					
-	      } else {
-		      if(a[category] < b[category]) return -1 * modifier
-		      if(a[category] > b[category]) return 1 * modifier	      	
-	      }
-	      return 0
-	    })
-	    this.setState({accounts: filteredAccounts}) 
-		})    
+		let filteredAccounts = accounts.filter((item, index) => {
+    	let items = [item.account_number, item.routing_number, item.bank_name, item.bank_address, item.bank_location, item.created_at].join(' ').toLowerCase()
+    	return items.indexOf(this.state.search.toLowerCase()) >= 0
+    }).sort((a,b) => {
+      let modifier = 1
+      if(direction === 'desc') modifier = -1
+      if(!isNaN(a[category])) {
+	      if(parseInt(a[category]) < parseInt(b[category])) return -1 * modifier
+	      if(parseInt(a[category]) > parseInt(b[category])) return 1 * modifier					
+      } else {
+	      if(a[category] < b[category]) return -1 * modifier
+	      if(a[category] > b[category]) return 1 * modifier	      	
+      }
+      return 0
+    })
+    this.setState({accounts: filteredAccounts}) 
+	}
+	sortAccounts = (payload, e) => {
+		e.persist();
+		let { category, direction } = this.state.sort
+
+		if(payload == category) {
+			this.setState(prevState => ({
+			  sort: {...prevState.sort, category: payload, direction: (direction === 'asc') ? 'desc' : 'asc'}
+			}), _=> {
+				this.filterAccounts(e)
+			})
+		}	
+		else {
+			this.setState(prevState => ({
+			  sort: {...prevState.sort, category: payload}
+			}), _=> {
+				this.filterAccounts(e)
+			})			
+		}
 	}    
 	render() {
-		let { search, accounts } = this.state
+		let { search, accounts, sort } = this.state
   	let { saved } = this.props
   	let savedNotification = (
   		<p className="text-success small align-middle">Saved!</p>
@@ -105,6 +124,11 @@ class List extends Component {
 				</tr>
 			)
 		})
+		let sortIcon = (
+			<span className="sort">
+				{(sort.direction == 'desc') ? <i className="fas fa-sort-amount-down"></i> : <i className="fas fa-sort-amount-up"></i>}
+			</span>
+		)
 		return (
 			<Fragment>
 				<h1 className="display-4 mb-4">Accounts</h1>
@@ -114,16 +138,16 @@ class List extends Component {
 				<div className="table-responsive">
 					{this.props.loaded == false ? (<Loader />) : (
 						<table className="table">
-							<thead>
+							<thead className="noselect">
 								<tr>
 									<th>Actions</th>
-									<th>Account Number</th>
-									<th>Routing Number</th>
-									<th>Bank Name</th>
-									<th>Bank Nickname</th>
-									<th>Bank Address</th>
-									<th>Bank Location</th>
-									<th>Created</th>
+									<th onClick={this.sortAccounts.bind(this, 'account_number')}>{sort.category == 'account_number' ? sortIcon : ''} Account Number</th>
+									<th onClick={this.sortAccounts.bind(this, 'routing_number')}>{sort.category == 'routing_number' ? sortIcon : ''} Routing Number</th>
+									<th onClick={this.sortAccounts.bind(this, 'bank_name')}>{sort.category == 'bank_name' ? sortIcon : ''} Bank Name</th>
+									<th onClick={this.sortAccounts.bind(this, 'bank_nickname')}>{sort.category == 'bank_nickname' ? sortIcon : ''} Bank Nickname</th>
+									<th onClick={this.sortAccounts.bind(this, 'bank_address')}>{sort.category == 'bank_address' ? sortIcon : ''} Bank Address</th>
+									<th onClick={this.sortAccounts.bind(this, 'bank_location')}>{sort.category == 'bank_location' ? sortIcon : ''} Bank Location</th>
+									<th onClick={this.sortAccounts.bind(this, 'created_at')}>{sort.category == 'created_at' ? sortIcon : ''} Created</th>
 								</tr>
 							</thead>
 							<tbody>
