@@ -8,6 +8,9 @@
 Email: guest@avail.co
 Password: password
 ```
+The Accounts list has a full-text search, sortable columns, delete action, and editable fields that update automatically on change. 
+On the New Account page, provide a valid routing number and the bank fields will be populated automatically. A form cannot be saved without 
+this number, with validations on both server and client side.
 
 
 ## Table of Contents
