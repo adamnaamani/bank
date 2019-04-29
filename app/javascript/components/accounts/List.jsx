@@ -19,47 +19,45 @@ class List extends Component {
     this.state = {
 			search: '',
 			readOnly: false,
-			sort: {
-				category: 'created_at', direction: 'desc'
-			},			
-			accounts: this.props.accounts || []			
+			accounts: this.props.accounts || [],
+			sort: { category: 'created_at', direction: 'desc' }			
 		}
 		this.onChange = this.onChange.bind(this);
   }	
 	componentDidMount() {
 		setTimeout(_=> {
-			this.props.getAccounts()
+			this.props.getAccounts();
+			document.getElementById('search-input').focus();
 		}, 1000)
 	}
 	componentDidUpdate(prevProps, prevState) {
 	  if(prevProps.accounts !== this.props.accounts) {
-	    this.setState({accounts: this.props.accounts}) 
+	    this.setState({accounts: this.props.accounts}); 
 	  }
 	}		
 	onChange = e => {
 		return new Promise(resolve => {			
 			this.setState({ [e.target.name]: e.target.value }, _=> {
-				this.filterAccounts()
-				resolve()
+				this.filterAccounts();
+				resolve();
 			})
 		})
   }
   editInputs = e => {
-  	this.setState(prevState => ({ readOnly: !prevState.readOnly }));
-  	$('input.form-control-plaintext').toggleClass('form-control', this.state.readOnly );  	
+  	this.setState(prevState => ({ readOnly: !prevState.readOnly }));	
   }
   updateAccount = (account, e) => {
   	e.persist();
 		this.setState(prevState => ({
 		  accounts: prevState.accounts.map(obj => (obj.id === account.id ? Object.assign(obj, {[e.target.name]: e.target.value }) : obj))
 		}), _=> {
-			let accountDetails = this.state.accounts.find(obj => obj.id === account.id)
-			this.props.updateAccount(accountDetails)
+			let accountDetails = this.state.accounts.find(obj => obj.id === account.id);
+			this.props.updateAccount(accountDetails);
 		});
   }
   deleteAccount = e => {
   	if(window.confirm('Are you sure you want to delete this account?')) {
-  		this.props.deleteAccount(e) 
+  		this.props.deleteAccount(e);
   	}
   }  
 	filterAccounts = e => {
@@ -67,44 +65,44 @@ class List extends Component {
 		let { category, direction } = this.state.sort;
 
 		let filteredAccounts = accounts.filter((item, index) => {
-    	let items = [item.account_number, item.routing_number, item.bank_name, item.bank_address, item.bank_location, item.created_at].join(' ').toLowerCase()
-    	return items.indexOf(this.state.search.toLowerCase()) >= 0
+    	let items = [item.account_number, item.routing_number, item.bank_name, item.bank_address, item.bank_location, item.created_at].join(' ').toLowerCase();
+    	return items.indexOf(this.state.search.toLowerCase()) >= 0;
     }).sort((a,b) => {
-      let modifier = 1
-      if(direction === 'desc') modifier = -1
+      let modifier = 1;
+      if(direction === 'desc') modifier = -1;
       if(!isNaN(a[category])) {
-	      if(parseInt(a[category]) < parseInt(b[category])) return -1 * modifier
-	      if(parseInt(a[category]) > parseInt(b[category])) return 1 * modifier					
+	      if(parseInt(a[category]) < parseInt(b[category])) return -1 * modifier;
+	      if(parseInt(a[category]) > parseInt(b[category])) return 1 * modifier	;				
       } else {
-	      if(a[category] < b[category]) return -1 * modifier
-	      if(a[category] > b[category]) return 1 * modifier	      	
+	      if(a[category] < b[category]) return -1 * modifier;
+	      if(a[category] > b[category]) return 1 * modifier;     	
       }
       return 0
     })
-    this.setState({accounts: filteredAccounts}) 
+    this.setState({accounts: filteredAccounts});
 	}
 	sortAccounts = (payload, e) => {
 		e.persist();
-		let { category, direction } = this.state.sort
+		let { category, direction } = this.state.sort;
 
 		if(payload == category) {
 			this.setState(prevState => ({
 			  sort: {...prevState.sort, category: payload, direction: (direction === 'asc') ? 'desc' : 'asc'}
 			}), _=> {
-				this.filterAccounts(e)
+				this.filterAccounts(e);
 			})
 		}	
 		else {
 			this.setState(prevState => ({
 			  sort: {...prevState.sort, category: payload}
 			}), _=> {
-				this.filterAccounts(e)
+				this.filterAccounts(e);
 			})			
 		}
 	}    
 	render() {
-		let { search, accounts, sort } = this.state
-  	let { saved } = this.props
+		let { search, accounts, sort } = this.state;
+  	let { saved } = this.props;
   	let savedNotification = (
   		<p className="text-success small align-middle">Saved!</p>
   	)		
@@ -134,7 +132,7 @@ class List extends Component {
 			<Fragment>
 				<h1 className="display-4 mb-4">Accounts</h1>
 				<div className="input-group p-1 mb-4">
-				  <input type="text" className="form-control" placeholder="Search for anything..." name="search" value={search} onChange={this.onChange} />
+				  <input type="text" className="form-control" id="search-input" placeholder="Search for anything..." name="search" value={search} onChange={this.onChange} />
 				</div>
 				<div className="table-responsive">
 					{this.props.loaded == false ? (<Loader />) : (

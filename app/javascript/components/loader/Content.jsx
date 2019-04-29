@@ -20,11 +20,9 @@ const TableRow = props => {
 
 const Table = () => (
   <Fragment>
-    {
-    	Array(5).fill('').map((e, i) => (
-        <TableRow key={i} style={{ opacity: Number(2 / i).toFixed(1) }} />
-    	))
-    }
+  	{Array(6).fill('').map((e, i) => (
+      <TableRow key={i} style={{ opacity: Number(2 / i).toFixed(1) }} />
+    ))}
   </Fragment>
 )
 

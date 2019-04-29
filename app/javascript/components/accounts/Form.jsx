@@ -55,22 +55,23 @@ class Form extends Component {
 	validateForm = e => {
 		return new Promise(resolve => {
 			if(!this.state.routing_number || this.state.routing_number.length != 9) {
-				(this.state.routing_number.length == 9) ? this.setState({routingNumberError: false}) : this.setState({routingNumberError: true})
+				(this.state.routing_number.length == 9) ? this.setState({routingNumberError: false}) : this.setState({routingNumberError: true});
 			} else if(!this.state.account_number || this.state.account_number.length > 10) {
-				this.setState({accountNumberError: true})
+				this.setState({accountNumberError: true});
 			} else {
-				resolve()
-				this.setState({validated: true, routingNumberError: false, accountNumberError: false})
+				resolve();
+				this.setState({validated: true, routingNumberError: false, accountNumberError: false});
 			}
 		})
 	}
 	submitForm = e => {
 		this.validateForm().then(_=> {
 			if(this.state.validated == true) {
-				this.setState({disabled: true})
-				this.props.addAccount(this.state)
-				// TODO - Check for existing Account
-				setTimeout(_=> { window.location.href = '/' }, 1500)
+				this.setState({disabled: true});
+				this.props.addAccount(this.state);
+				
+				// TODO - Server-side validation errors. Check for existing Account.
+				setTimeout(_=> { window.location.href = '/' }, 1500);
 			}
 		})
 	}

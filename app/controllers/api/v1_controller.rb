@@ -69,6 +69,8 @@ class Api::V1Controller < ApplicationController
 	def authenticate
 		if user_signed_in?
 			@user = current_user
+		else
+			render json: { status: :unauthorized }
 		end
 	end
 

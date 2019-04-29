@@ -11,19 +11,20 @@ import '../styles/Layout.scss';
 
 import Header from '../components/layout/Header';
 import Footer from '../components/layout/Footer';
-import Dashboard from '../components/accounts/Dashboard';
 import List from '../components/accounts/List';
 import Form from '../components/accounts/Form';
+import Dashboard from '../components/accounts/Dashboard';
 
 axios.defaults.headers.common['X-CSRF-Token'] = document.getElementsByName('csrf-token')[0].getAttribute('content');
 axios.defaults.headers.common['Accept'] = 'application/json';
 
 class App extends Component {
 	componentDidMount() {
-		store.dispatch(getUser());
 		setTimeout(_=> {
 			document.body.style.display = 'block';
 		}, 300)
+		let loggedOutPaths = ['/users/sign_in', '/users/sign_up', '/users/password/new']
+		loggedOutPaths.includes(window.location.pathname) ? null : store.dispatch(getUser());
 	}
 	render() {
 		return (
@@ -34,8 +35,8 @@ class App extends Component {
 						<Fragment>
 							<div className="container py-4 mb-5">
 								<Route exact path="/" component={List} />
-								<Route exact path="/dashboard" component={Dashboard} />
 								<Route exact path="/new" component={Form} />
+								<Route exact path="/dashboard" component={Dashboard} />
 							</div>
 						</Fragment>					
 					</Switch>
