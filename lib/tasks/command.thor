@@ -82,7 +82,6 @@ class Command < Thor
 				phone_number: result['telephone'],
 				office_code: result['office_code']
 			)
-
 		end
 	end
 
