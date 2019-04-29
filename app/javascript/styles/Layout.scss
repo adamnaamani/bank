@@ -165,6 +165,9 @@ i {
 		vertical-align: middle;
 		width: 12.5%;
 	}
+	th {
+		cursor: pointer;
+	}
 }
 
 /* Icons */
@@ -174,4 +177,8 @@ i {
 
 /* Bank */
 #main {
+}
+.sort {
+	display: inline-block;
+	margin-right: 2px;
 }
