@@ -21,7 +21,7 @@ class Api::V1Controller < ApplicationController
 	end
 
 	def add_account
-		@account = @user.accounts.create!(
+		@account = @user.accounts.create(
     	account_number: params[:account_number],
 	    routing_number: params[:routing_number],
 	    bank_name: params[:bank_name],
@@ -33,7 +33,7 @@ class Api::V1Controller < ApplicationController
 		if @account.persisted?
 			render json: { status: :ok, account: @account }
 		else
-			render json: { status: :conflict }
+			render json: { status: :conflict, errors: @account.errors }
 		end
 	end
 

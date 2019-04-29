@@ -78,29 +78,29 @@ document.addEventListener('DOMContentLoaded', () => {
 Tasks are used for populating database from external Routing Numbers API. 
 ```ruby
 class Command < Thor		
-  require File.expand_path("config/environment.rb")
-  require 'nokogiri'
-  require 'open-uri'	
-  require 'net/http'
-  
-  desc "api", "get results from external API"
-  def api
-	url = 'https://www.routingnumbers.info/api/data.json?rn='
+	require File.expand_path("config/environment.rb")
+	require 'nokogiri'
+	require 'open-uri'	
+	require 'net/http'
 	
-	Institution.find_each do |institution|
-	  query = [url, institution.routing_number].join()
-	  result = JSON.parse(Net::HTTP.get(URI(query)))
-	  puts result
-	  institution.update(
-	    bank_address: result['address'],
-		zip_code: result['zip'],
-		city: result['city'],
-		state: result['state'],
-		phone_number: result['telephone'],
-		office_code: result['office_code']
-	  )
+	desc "api", "get results from external API"
+	def api
+		url = 'https://www.routingnumbers.info/api/data.json?rn='
+		
+		Institution.find_each do |institution|
+			query = [url, institution.routing_number].join()
+			result = JSON.parse(Net::HTTP.get(URI(query)))
+			puts result
+			institution.update(
+				bank_address: result['address'],
+				zip_code: result['zip'],
+				city: result['city'],
+				state: result['state'],
+				phone_number: result['telephone'],
+				office_code: result['office_code']
+				)
+		end
 	end
-  end
 end	
 ```
 
