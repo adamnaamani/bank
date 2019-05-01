@@ -1,9 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { getAccounts } from '../../actions/accounts';
-import { getCoordinates } from '../../actions/geo';
 import moment from 'moment';
 
 let map, marker, circle, location, zoom, infoWindow;
@@ -11,8 +10,8 @@ let markers = []
 let bounds = new google.maps.LatLngBounds()
 let mapDefaults = {
 	coordinates: {
-		lat: 49.246292,
-		lng: -123.116226
+		lat: 41.881832,
+		lng: -87.623177
 	},
 	mapOptions: {
 		zoom: 11,
@@ -69,38 +68,27 @@ let mapDefaults = {
 }
 
 class Map extends Component {
-	static propTypes = {
-		accounts: PropTypes.array,
-		coordinates: PropTypes.array,
-		getAccounts: PropTypes.func.isRequired,
-		getCoordinates: PropTypes.func.isRequired		
-	}	
 	constructor(props) {
 		super(props)
 		this.initialState = {
-			accounts: this.props.accounts || [],
-			coordinates: this.props.coordinates || []
+			accounts: [],
+			coordinates: []
     };
     this.state = this.initialState;
   }
   componentDidMount() {
   	this.loadMap().then(_=> {
-			this.props.getAccounts();
-  	})
+  		setTimeout(_=> { 
+  			this.setViewport();
+  		}, 500)
+  	});
   }
   componentDidUpdate(prevProps, prevState) {
 	  if(prevProps.accounts !== this.props.accounts) {
 	    this.setState({accounts: this.props.accounts});
-
-  		if(this.state.accounts.length) {
-  			this.state.accounts.forEach(account => {
-					this.props.getCoordinates([account.bank_address, account.bank_location].join(', '));
-  			})
-  		}
 	  }  	
 	  if(prevProps.coordinates !== this.props.coordinates) {
 	    this.setState({coordinates: this.props.coordinates});
-	    setTimeout(_=> { this.setViewport() }, 300)
 	  }
   }
   loadMap() {
@@ -112,32 +100,30 @@ class Map extends Component {
 	setViewport() {
 		if(this.state.coordinates.length) {
 			this.state.coordinates.forEach(coordinate => {
-				this.createMarker(coordinate[0].geometry.location);
+				this.createMarker(coordinate);
 			})
 			this.plotMarkers();		
-			this.fitBounds();			
+			this.fitBounds();	
+		} else {
+			map.setCenter(new google.maps.LatLng(mapDefaults.coordinates.lat, mapDefaults.coordinates.lng))
 		}
 	}
-	setStreetview(subject) {
-			let element = document.getElementById('report-streetview')
-			let address = subject.standard_fullAddress
-			let subjectLatLng = new google.maps.LatLng(subject.latitude, subject.longitude)
-		  let request = { origin: address, destination: address, travelMode: google.maps.DirectionsTravelMode.DRIVING }
+	setStreetview(coordinates) {
+		let element = document.getElementById('streetview')
+	  let request = { origin: coordinates, destination: coordinates, travelMode: google.maps.DirectionsTravelMode.DRIVING }
 
-		  if(this.subject.building == null) {
-	      new google.maps.DirectionsService().route(request, function(results, status) {
-				  if(status == google.maps.DirectionsStatus.OK) {
-				    new google.maps.StreetViewService().getPanoramaByLocation(results.routes[0].legs[0].start_location, 50, function(data, status) {
-					    let heading = google.maps.geometry.spherical.computeHeading(data.location.latLng, subjectLatLng)
-							let streetview = new google.maps.StreetViewPanorama(element, {
-								disableDefaultUI: true,
-								position: data.location.latLng,
-								pov: { heading: heading, pitch: 0, zoom: 1 }
-							})
-				    })				    
-				  }
-	      })
+    new google.maps.DirectionsService().route(request, function(results, status) {
+		  if(status == google.maps.DirectionsStatus.OK) {
+		    new google.maps.StreetViewService().getPanoramaByLocation(results.routes[0].legs[0].start_location, 50, function(data, status) {
+			    let heading = google.maps.geometry.spherical.computeHeading(data.location.latLng, coordinates)
+					let streetview = new google.maps.StreetViewPanorama(element, {
+						disableDefaultUI: true,
+						position: data.location.latLng,
+						pov: { heading: heading, pitch: 0, zoom: 1 }
+					})
+		    })				    
 		  }
+    })
 	}
 	setStyle() {
 		let styledMapType = new google.maps.StyledMapType(MapDefaults.poiOff)
@@ -155,13 +141,15 @@ class Map extends Component {
 		map.data.addListener('click', function(event) {
 		})		
 	}
-	createMarker(coordinates) {
+	createMarker(coordinate) {
 		return new Promise(resolve => {
-			bounds.extend(coordinates);
+			bounds.extend(coordinate.geometry.location);
 			marker = new google.maps.Marker({ 
-				position: coordinates
+				position: coordinate.geometry.location,
+				accountId: coordinate.account.id,
+				animation: google.maps.Animation.DROP
 			})			
-			markers.push(marker);
+			markers = [...markers, marker]
 			resolve();
 		})
 	}
@@ -207,12 +195,27 @@ class Map extends Component {
 		map.data.forEach(function(feature) {
     	map.data.remove(feature)
 		})
-	}  
+	}
+	onMouseEnter(account, e) {
+		if(markers.length) {
+			let activeMarker = markers.find(marker => marker.accountId == account);
+			if(activeMarker.getAnimation() !== null) {
+	      activeMarker.setAnimation(null);
+	    } else {
+	      activeMarker.setAnimation(google.maps.Animation.BOUNCE);
+	    }
+		}		
+	}
+	onMouseLeave(account, e) {
+		if(markers.length) {
+			markers.find(marker => marker.accountId == account).setAnimation(null);
+		}
+	} 
   render() {
-  	const { accounts } = this.state
-  	let accountList = accounts.map(account => {
+  	const { accounts } = this.state;
+  	let accountList = accounts.length ? accounts.map(account => {
   		return (
-				<div key={account.id} className="card mb-3">
+				<div key={account.id} className="card mb-3" onMouseEnter={this.onMouseEnter.bind(this, account.id)} onMouseLeave={this.onMouseLeave.bind(this, account.id)}>
 				  <img className="card-img-top" />
 				  <div className="card-body">
 				    <h5 className="card-title">{account.bank_name}</h5>
@@ -221,7 +224,11 @@ class Map extends Component {
 				  </div>
 				</div>  			
   		)
-  	})
+  	}) : (
+  		<div className="d-flex justify-content-center align-items-center">
+  			<span style={{lineHeight: 500 + 'px'}}><Link to="/new" className="btn btn-outline-primary">Create An Account</Link></span>
+  		</div>
+  	)
   	return (
   		<Fragment>
   			<div id="map-container" className="row">
@@ -233,18 +240,4 @@ class Map extends Component {
   }
 }
 
-function mapStateToProps(state) {
-	return {
-		accounts: state.accounts.accounts,
-		coordinates: state.geo.coordinates
-	}
-}
-
-function mapDispatchToProps(dispatch) {
-	return {
-		getAccounts: bindActionCreators(getAccounts, dispatch),
-		getCoordinates: bindActionCreators(getCoordinates, dispatch)
-	}
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Map);
+export default connect()(Map);
