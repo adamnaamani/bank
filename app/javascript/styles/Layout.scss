@@ -137,6 +137,11 @@ i {
 }
 .shadow-3 {
 }
+.centered {
+  display: flex;
+  justify-content: center;
+  align-items: center; 
+}
 
 /* Bootstrap */
 .navbar-brand {
@@ -188,7 +193,16 @@ i {
 	#sidebar {
 		width: 100%; height: 100%; min-height: 500px;
 		overflow: scroll;
+		padding: 20px;
+		border: 1px solid #ececec;
+		border-left: none;
 	}
+	.btn-new-account {
+		position: absolute; top: 50%;
+		text-align: center;
+		width: 200px; height: 100px;
+		margin: -50px auto 0;
+	}	
 }
 .sort {
 	display: inline-block;

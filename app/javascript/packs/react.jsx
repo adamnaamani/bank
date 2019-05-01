@@ -21,8 +21,8 @@ axios.defaults.headers.common['Accept'] = 'application/json';
 class App extends Component {
 	componentDidMount() {
 		setTimeout(_=> {
-			document.body.style.display = 'block';
-		}, 300)
+			document.body.style.visibility = 'visible';
+		}, 500)
 		let loggedOutPaths = ['/users/sign_in', '/users/sign_up', '/users/password/new']
 		loggedOutPaths.includes(window.location.pathname) ? null : store.dispatch(getUser());
 	}
