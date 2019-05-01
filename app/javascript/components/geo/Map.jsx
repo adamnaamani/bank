@@ -219,14 +219,14 @@ class Map extends Component {
 				  <img className="card-img-top" />
 				  <div className="card-body">
 				    <h5 className="card-title">{account.bank_name}</h5>
-				    <h6 className="card-subtitle mb-2 text-muted">{account.bank_address}</h6>
+				    <h6 className="card-subtitle mb-2 text-muted">{[account.bank_address, account.bank_location].join(', ')}</h6>
 				    <p className="card-text"><small className="text-muted small">Last updated {moment(account.updated_at).format('MM/DD/YYYY')}</small></p>
 				  </div>
 				</div>  			
   		)
   	}) : (
-  		<div className="d-flex justify-content-center align-items-center">
-  			<span style={{lineHeight: 500 + 'px'}}><Link to="/new" className="btn btn-outline-primary">Create An Account</Link></span>
+  		<div className="centered">
+  			<div className="btn-new-account"><Link to="/new" className="btn btn-outline-primary">Create An Account</Link></div>
   		</div>
   	)
   	return (
