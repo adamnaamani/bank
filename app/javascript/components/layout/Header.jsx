@@ -14,14 +14,13 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
 export class Header extends Component {
-	componentDidUpdate() {
-	}
   render() {
   	let { authenticated, user } = this.props.auth
 		let userLinks = (
 			<Fragment>
 				<Link to="/new" className="nav-link text-primary">New Account</Link>
 				<Link to="/" className="nav-link">Accounts</Link>
+				<Nav.Link href="/dashboard">Dashboard</Nav.Link>
 	      <Nav.Link href="/users/sign_out">Logout</Nav.Link>
       </Fragment>
 		)

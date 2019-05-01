@@ -4,8 +4,9 @@ import { Link } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { getAccounts, updateAccount, deleteAccount } from '../../actions/accounts';
-import Loader from '../loader/Content';
 import moment from 'moment';
+
+import Loader from '../loader/Content';
 
 class List extends Component {
 	static propTypes = {
