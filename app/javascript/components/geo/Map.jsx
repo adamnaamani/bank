@@ -25,7 +25,8 @@ let mapDefaults = {
 	  rotateControl: false,
 	  fullscreenControl: false,		
 		mapTypeId: 'roadmap',
-		center: null
+		center: null,
+		backgroundColor: '#eaeaea'
 	},
 	circleDefaults: {
 	  strokeColor: '#2d89ef',
@@ -93,7 +94,7 @@ class Map extends Component {
   }
   loadMap() {
   	return new Promise(resolve => {
-			map = new google.maps.Map(document.getElementById('map'), {...mapDefaults.mapOptions})
+			map = new google.maps.Map(document.getElementById('map'), {...mapDefaults.mapOptions});
 			resolve();  		
   	})
 	}
@@ -101,11 +102,11 @@ class Map extends Component {
 		if(this.state.coordinates.length) {
 			this.state.coordinates.forEach(coordinate => {
 				this.createMarker(coordinate);
-			})
+			});
 			this.plotMarkers();		
 			this.fitBounds();	
 		} else {
-			map.setCenter(new google.maps.LatLng(mapDefaults.coordinates.lat, mapDefaults.coordinates.lng))
+			map.setCenter(new google.maps.LatLng(mapDefaults.coordinates.lat, mapDefaults.coordinates.lng));
 		}
 	}
 	setStreetview(coordinates) {
@@ -126,20 +127,20 @@ class Map extends Component {
     })
 	}
 	setStyle() {
-		let styledMapType = new google.maps.StyledMapType(MapDefaults.poiOff)
-		map.mapTypes.set('Clear', styledMapType)
-    map.setMapTypeId('Clear')	
+		let styledMapType = new google.maps.StyledMapType(MapDefaults.poiOff);
+		map.mapTypes.set('Clear', styledMapType);
+    map.setMapTypeId('Clear');
 	}
 	setMapListeners() {
 		google.maps.event.addListener(map, 'zoom_changed', function() {
-			let zoom = map.getZoom()
+			let zoom = map.getZoom();
 		})
 	}
 	setDataListeners() {
 		map.data.addListener('mouseover', function(event) {
-		})
+		});
 		map.data.addListener('click', function(event) {
-		})		
+		});		
 	}
 	createMarker(coordinate) {
 		return new Promise(resolve => {
@@ -149,60 +150,55 @@ class Map extends Component {
 				accountId: coordinate.account.id,
 				animation: google.maps.Animation.DROP,
 				icon: mapDefaults.iconDefaults
-			})
-			this.createInfoWindow(marker, coordinate)
-			markers = [...markers, marker]
+			});
+			this.createInfoWindow(marker, coordinate);
+			markers = [...markers, marker];
 			resolve();
 		})
 	}
 	plotMarkers() {
 		for(let i = 0; i < markers.length; i++) {
-			markers[i].setMap(map)
+			markers[i].setMap(map);
 		}
 	}
 	clearMarkers() {
 		let i = markers.length;
 		while(i--) {
-			markers[i].setMap(null)
+			markers[i].setMap(null);
 		}
-	  markers = []
+	  markers = [];
 	}
 	createInfoWindow(marker, coordinate) {
 		let self = this;
 		let markerContent = coordinate.account.bank_name;
 		let infoWindowPosition = coordinate.geometry.location;
-	  let activeAccount = self.state.accounts.find(account => account.id == coordinate.account.id)
-	  let accountListItem = $(`div#account-${activeAccount.id}`);
+	  let activeAccount = self.state.accounts.find(account => account.id == coordinate.account.id);
+	  let activeAccountElement = $(`div#account-${activeAccount.id}`);
 
 		infoWindow =  new google.maps.InfoWindow({
 			position: infoWindowPosition
 		});
 
 		marker.addListener('mouseover', function() {
-		  accountListItem.removeClass('unhovered-card').addClass('hovered-card');
-
+		  activeAccountElement.removeClass('unhovered-card').addClass('hovered-card');
 		  infoWindow.setContent(markerContent);
 		  infoWindow.open(map, this);
 		});
 		marker.addListener('mouseout', function() {
-		  accountListItem.removeClass('hovered-card').addClass('unhovered-card');
-
+		  activeAccountElement.removeClass('hovered-card').addClass('unhovered-card');
 		  infoWindow.close();
 		});
 		marker.addListener('click', function() {
 			let sidebar = $('#sidebar');
-	    let top = $(accountListItem).position().top - 20;
+	    let top = $(activeAccountElement).position().top - 20;
 	    let currentScroll = sidebar.scrollTop();
-
-	    sidebar.animate({
-	      scrollTop: currentScroll + top
-	    }, 300);			
+	    sidebar.animate({ scrollTop: currentScroll + top }, 300);			
 		});
 	}
 	extendBounds() {
 		map.data.forEach(function(feature){
 		  feature.getGeometry().forEachLatLng(function(latlng) {
-		    bounds.extend(latlng)
+		    bounds.extend(latlng);
 		  })
 		})
 	}
@@ -210,12 +206,12 @@ class Map extends Component {
 		map.fitBounds(bounds);
 	}
 	addGeoJsonLayer(geojson) {
-		map.data.addGeoJson(geojson)
-		map.data.setStyle(MapDefaults.dataDefaults)
+		map.data.addGeoJson(geojson);
+		map.data.setStyle(MapDefaults.dataDefaults);
 	}
 	clearGeoJsonLayers() {
 		map.data.forEach(function(feature) {
-    	map.data.remove(feature)
+    	map.data.remove(feature);
 		})
 	}
 	onMouseEnter(account, e) {
