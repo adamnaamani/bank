@@ -80,7 +80,7 @@ class Map extends Component {
   	this.loadMap().then(_=> {
   		setTimeout(_=> { 
   			this.setViewport();
-  		}, 500)
+  		}, 1000)
   	});
   }
   componentDidUpdate(prevProps, prevState) {
@@ -170,32 +170,30 @@ class Map extends Component {
 	createInfoWindow(marker, coordinate) {
 		let self = this;
 		let markerContent = coordinate.account.bank_name;
+		let infoWindowPosition = coordinate.geometry.location;
+	  let activeAccount = self.state.accounts.find(account => account.id == coordinate.account.id)
+	  let accountListItem = $(`div#account-${activeAccount.id}`);
 
 		infoWindow =  new google.maps.InfoWindow({
-			position: coordinate.geometry.location
+			position: infoWindowPosition
 		});
 
 		marker.addListener('mouseover', function() {
-		  let activeAccount = self.state.accounts.find(account => account.id == coordinate.account.id)
-		  let accountListItem = $(`#account-${activeAccount.id}`);
-		  accountListItem.addClass('hovered-card');
+		  accountListItem.removeClass('unhovered-card').addClass('hovered-card');
 
 		  infoWindow.setContent(markerContent);
 		  infoWindow.open(map, this);
 		});
 		marker.addListener('mouseout', function() {
-		  let activeAccount = self.state.accounts.find(account => account.id == coordinate.account.id)
-		  let accountListItem = $(`#account-${activeAccount.id}`);
-		  accountListItem.removeClass('hovered-card');
+		  accountListItem.removeClass('hovered-card').addClass('unhovered-card');
 
 		  infoWindow.close();
 		});
 		marker.addListener('click', function() {
-		  let activeAccount = self.state.accounts.find(account => account.id == coordinate.account.id)
-		  let accountListItem = document.getElementById(`account-${activeAccount.id}`)
-
-		  console.log(accountListItem)
-		});			
+			$('#sidebar').animate({
+	       scrollTop: ($(accountListItem).offset().top)
+	     }, 300);
+		});
 	}
 	extendBounds() {
 		map.data.forEach(function(feature){
