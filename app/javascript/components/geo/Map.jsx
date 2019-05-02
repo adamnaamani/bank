@@ -190,9 +190,13 @@ class Map extends Component {
 		  infoWindow.close();
 		});
 		marker.addListener('click', function() {
-			$('#sidebar').animate({
-	       scrollTop: ($(accountListItem).offset().top)
-	     }, 300);
+			let sidebar = $('#sidebar');
+	    let top = $(accountListItem).position().top - 20;
+	    let currentScroll = sidebar.scrollTop();
+
+	    sidebar.animate({
+	      scrollTop: currentScroll + top
+	    }, 300);			
 		});
 	}
 	extendBounds() {
