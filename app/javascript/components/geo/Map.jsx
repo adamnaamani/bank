@@ -40,8 +40,8 @@ let mapDefaults = {
 		path: google.maps.SymbolPath.CIRCLE,
 		scale: 6,
 		strokeWeight: 2,
-		strokeColor: '#000000',
-		fillColor: '#2d89ef',
+		strokeColor: '#000',
+		fillColor: '#00d2d3',
 		fillOpacity: 0.8				
 	},
 	dataDefaults: {
@@ -147,8 +147,10 @@ class Map extends Component {
 			marker = new google.maps.Marker({ 
 				position: coordinate.geometry.location,
 				accountId: coordinate.account.id,
-				animation: google.maps.Animation.DROP
-			})			
+				animation: google.maps.Animation.DROP,
+				icon: mapDefaults.iconDefaults
+			})
+			this.createInfoWindow(marker, coordinate)
 			markers = [...markers, marker]
 			resolve();
 		})
@@ -165,17 +167,35 @@ class Map extends Component {
 		}
 	  markers = []
 	}
-	createInfoWindow(coordinates) {
+	createInfoWindow(marker, coordinate) {
+		let self = this;
+		let markerContent = coordinate.account.bank_name;
+
 		infoWindow =  new google.maps.InfoWindow({
-			content: 'Sup',
-			position: coordinates
-		});				
+			position: coordinate.geometry.location
+		});
+
 		marker.addListener('mouseover', function() {
+		  let activeAccount = self.state.accounts.find(account => account.id == coordinate.account.id)
+		  let accountListItem = $(`#account-${activeAccount.id}`);
+		  accountListItem.addClass('hovered-card');
+
+		  infoWindow.setContent(markerContent);
 		  infoWindow.open(map, this);
 		});
 		marker.addListener('mouseout', function() {
+		  let activeAccount = self.state.accounts.find(account => account.id == coordinate.account.id)
+		  let accountListItem = $(`#account-${activeAccount.id}`);
+		  accountListItem.removeClass('hovered-card');
+
 		  infoWindow.close();
-		});	
+		});
+		marker.addListener('click', function() {
+		  let activeAccount = self.state.accounts.find(account => account.id == coordinate.account.id)
+		  let accountListItem = document.getElementById(`account-${activeAccount.id}`)
+
+		  console.log(accountListItem)
+		});			
 	}
 	extendBounds() {
 		map.data.forEach(function(feature){
@@ -215,7 +235,7 @@ class Map extends Component {
   	const { accounts } = this.state;
   	let accountList = accounts.length ? accounts.map(account => {
   		return (
-				<div key={account.id} className="card mb-3" onMouseEnter={this.onMouseEnter.bind(this, account.id)} onMouseLeave={this.onMouseLeave.bind(this, account.id)}>
+				<div key={account.id} className="card mb-3" id={`account-${account.id}`} onMouseEnter={this.onMouseEnter.bind(this, account.id)} onMouseLeave={this.onMouseLeave.bind(this, account.id)}>
 				  <img className="card-img-top" />
 				  <div className="card-body">
 				    <h5 className="card-title">{account.bank_name}</h5>
