@@ -203,12 +203,21 @@ i {
 		width: 200px; height: 100px;
 		margin: -50px auto 0;
 	}
-	.card:hover, .hovered-card {
+	.card {
+		box-shadow: none;
+		transition: all 0.3s ease-in-out;		
+		&:hover {
+			box-shadow: 0 1px 10px -1px rgba(0,0,0,0.15);
+			background: #fafafa;
+			transition: all 0.3s ease-in-out;
+		}
+	}	
+	.hovered-card {
 		box-shadow: 0 1px 10px -1px rgba(0,0,0,0.15);
 		background: #fafafa;
 		transition: all 0.3s ease-in-out;
 	}
-	.card, .unhovered-card {
+	.unhovered-card {
 		box-shadow: none;
 		transition: all 0.3s ease-in-out;
 	}		
