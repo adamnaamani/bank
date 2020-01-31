@@ -1,6 +1,6 @@
 class Account < ApplicationRecord
-	belongs_to :user
-	belongs_to :institution
+  belongs_to :user
+  belongs_to :institution
 
   validates :account_number, presence: true, uniqueness: true, length: { maximum: 10 }
   validates :routing_number, presence: true, length: { is: 9 }

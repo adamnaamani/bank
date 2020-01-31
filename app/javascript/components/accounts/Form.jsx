@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -14,7 +13,8 @@ class Form extends Component {
 	
 	state = {
 		readOnly: true, disabled: false, validated: false,
-		routingNumberError: false, accountNumberError: false, bankNameError: false, bankAddressError: false, bankLocationError: false,
+		routingNumberError: false, accountNumberError: false, bankNameError: false,
+		bankAddressError: false, bankLocationError: false,
 		account_number: '', routing_number: '', bank_name: '', bank_address: '', bank_location: '',
 		errors: [], institutions: []		
 	}
@@ -25,13 +25,9 @@ class Form extends Component {
 	  }
 	}	  
 	
-	onChange = e => {
-		return new Promise(resolve => {
-	    this.setState({ [e.target.name]: e.target.value }, _=> {
-	  		resolve();		
-			});
-		})		
-  }
+	onChange = e => (
+		Promise.resolve(this.setState({ [e.target.name]: e.target.value }))		
+	)
 	
 	getInstitutions = e => {
   	this.setState({			
@@ -45,7 +41,7 @@ class Form extends Component {
   	});
   }  
 	
-	validateForm = e => {
+	validateForm = () => {
 		this.setState({
 			routingNumberError: false,
 			accountNumberError: false,
@@ -68,8 +64,11 @@ class Form extends Component {
 				this.setState({routingNumberError: true});
 			} 
 			else {
-				resolve();
-				this.setState({validated: true, routingNumberError: false, accountNumberError: false});
+				resolve(
+					this.setState({
+						validated: true, routingNumberError: false, accountNumberError: false
+					})
+				);
 			}
 		})
 	}
@@ -80,7 +79,7 @@ class Form extends Component {
 				this.setState({disabled: true});
 				this.props.addAccount(this.state);
 				
-				setTimeout(_=> {
+				setTimeout(() => {
 					if(!this.props.errors.errors) {
 						window.location.href = '/';
 					}
@@ -110,7 +109,6 @@ class Form extends Component {
   		bank_name, 
   		bank_address, 
   		bank_location, 
-  		validated, 
   		routingNumberError, 
   		accountNumberError,
   		bankNameError,

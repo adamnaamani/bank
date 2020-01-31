@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { getAccounts } from '../../actions/accounts';
 import { getCoordinates } from '../../actions/geo';
-import Map from '../geo/Map'
+import Map from '../geo/Map';
 
 class Dashboard extends Component {
 	static propTypes = {

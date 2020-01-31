@@ -49,11 +49,11 @@ Postgres database has unique index for `accounts` and `institutions`, and is als
 
 * accounts
 ```ruby
-:account_number, presence: true, uniqueness: true, length: { maximum: 10 }
+validates :account_number, presence: true, uniqueness: true, length: { maximum: 10 }
 ```
 * institutions
 ```ruby
-:routing_number, presence: true, uniqueness: true, length: { is: 9 }
+validates :routing_number, presence: true, uniqueness: true, length: { is: 9 }
 ```
 
 
@@ -64,8 +64,8 @@ Postgres database has unique index for `accounts` and `institutions`, and is als
 * [Yarn](https://yarnpkg.com/en/)
 
 Rails Webpacker serves up React in pack tag:
-```ruby
-<%= javascript_pack_tag 'react' %> 
+```jsx
+<%= javascript_pack_tag "react" %> 
 ```
 
 Main `<App />` component is rendered when DOM is loaded:
