@@ -1,4 +1,4 @@
-# Bank API
+# Bank
 ![CI](https://github.com/adamnaamani/bank/workflows/CI/badge.svg?branch=master)
 > A Ruby on Rails & ReactJS CRUD banking app, hosted on [Heroku](https://heroku.com).
 
