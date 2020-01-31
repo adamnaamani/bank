@@ -5,7 +5,7 @@ ruby '2.6.3'
 
 gem 'rails', '~> 6.0.0.rc1'
 gem 'pg', '>= 0.18', '< 2.0'
-gem 'puma', '~> 3.11'
+gem 'puma', '~> 3.12'
 gem 'devise', '~> 4.6.2'
 gem 'webpacker', '~> 4.0'
 gem 'jbuilder', '~> 2.5'
