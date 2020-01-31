@@ -1,4 +1,4 @@
-# <img src="https://bank-rails-react.herokuapp.com/bank-logo.png" alt="Bank" width="150"/>
+# Bank <img src="https://bank-rails-react.herokuapp.com/android-chrome-192x192.png" alt="Bank" height="20" />
 
 ![CI](https://github.com/adamnaamani/bank/workflows/CI/badge.svg?branch=master)
 > A Ruby on Rails & ReactJS CRUD banking app, hosted on [Heroku](https://heroku.com).
