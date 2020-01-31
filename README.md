@@ -5,7 +5,7 @@
 ## Guests
 [Sign In](https://bank-rails-react.herokuapp.com/users/sign_in) to the guest account to take the app for a spin:
 ```
-Email: guest@avail.co
+Email: guest@bank.com
 Password: password
 ```
 The Accounts list has a full-text search, sortable columns, delete action, and editable fields that update automatically on change. 
@@ -81,10 +81,10 @@ document.addEventListener('DOMContentLoaded', () => {
 Tasks are used for populating database from external Routing Numbers API. 
 ```ruby
 class Command < Thor		
-	require File.expand_path("config/environment.rb")
-	require 'nokogiri'
-	require 'open-uri'	
-	require 'net/http'
+  require File.expand_path("config/environment.rb")
+  require 'nokogiri'
+  require 'open-uri'	
+  require 'net/http'
 end	
 ```
 
