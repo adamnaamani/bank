@@ -3,7 +3,6 @@ import { Redirect } from 'react-router';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-
 import { getInstitutions } from '../../actions/institutions';
 import { addAccount } from '../../actions/accounts';
 
@@ -12,21 +11,20 @@ class Form extends Component {
 		addAccount: PropTypes.func.isRequired,
 		getInstitutions: PropTypes.func.isRequired
 	}	
-	constructor(props) {
-		super(props)
-		this.initialState = {
-			readOnly: true, disabled: false, validated: false,
-			routingNumberError: false, accountNumberError: false, bankNameError: false, bankAddressError: false, bankLocationError: false,
-			account_number: '', routing_number: '', bank_name: '', bank_address: '', bank_location: '',
-			errors: [], institutions: []
-    };
-    this.state = this.initialState;
-  }
-	componentDidUpdate(prevProps, prevState) {
+	
+	state = {
+		readOnly: true, disabled: false, validated: false,
+		routingNumberError: false, accountNumberError: false, bankNameError: false, bankAddressError: false, bankLocationError: false,
+		account_number: '', routing_number: '', bank_name: '', bank_address: '', bank_location: '',
+		errors: [], institutions: []		
+	}
+	
+	componentDidUpdate(prevProps) {
 	  if(prevProps.institutions !== this.props.institutions) {
 	  	this.setState(this.props.institutions);
 	  }
 	}	  
+	
 	onChange = e => {
 		return new Promise(resolve => {
 	    this.setState({ [e.target.name]: e.target.value }, _=> {
@@ -34,17 +32,19 @@ class Form extends Component {
 			});
 		})		
   }
-  getInstitutions = e => {
+	
+	getInstitutions = e => {
   	this.setState({			
   		bank_name: '',
 			bank_address: '',
 			bank_location: ''
 		});
 
-  	this.onChange(e).then(_=> {  		
+  	this.onChange(e).then(() => {  		
 	  	this.props.getInstitutions(this.state);
   	});
   }  
+	
 	validateForm = e => {
 		this.setState({
 			routingNumberError: false,
@@ -73,8 +73,9 @@ class Form extends Component {
 			}
 		})
 	}
+	
 	submitForm = e => {
-		this.validateForm().then(_=> {
+		this.validateForm().then(() => {
 			if(this.state.validated == true) {
 				this.setState({disabled: true});
 				this.props.addAccount(this.state);
@@ -100,7 +101,8 @@ class Form extends Component {
 			}
 		})
 	}
-  render() {
+	
+	render() {
   	const { 
   		disabled, 
   		account_number, 
@@ -207,19 +209,15 @@ class Form extends Component {
   }
 }
 
-function mapStateToProps(state) {
-	return {
-		loaded: state.institutions.loaded,
-		institutions: state.institutions.institutions,
-		errors: state.accounts.errors
-	}
-}
+const mapStateToProps = (state) => ({
+	loaded: state.institutions.loaded,
+	institutions: state.institutions.institutions,
+	errors: state.accounts.errors
+})
 
-function mapDispatchToProps(dispatch) {
-	return {
-		getInstitutions: bindActionCreators(getInstitutions, dispatch),
-		addAccount: bindActionCreators(addAccount, dispatch)
-	}
-}
+const mapDispatchToProps = (dispatch) => ({
+	getInstitutions: bindActionCreators(getInstitutions, dispatch),
+	addAccount: bindActionCreators(addAccount, dispatch)
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(Form);

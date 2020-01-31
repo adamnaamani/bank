@@ -12,23 +12,22 @@ class Dashboard extends Component {
 		coordinates: PropTypes.array,
 		getAccounts: PropTypes.func.isRequired,		
 		getCoordinates: PropTypes.func.isRequired		
-	}	
-	constructor(props) {
-		super(props)
-		this.initialState = {
-			accounts: this.props.accounts || [],
-			coordinates: this.props.coordinates || []
-    };
-    this.state = this.initialState;
-  }
-  componentDidMount() {
-  	this.props.getAccounts().then(_=> {
+	}
+	
+	state = {
+		accounts: this.props.accounts || [],
+		coordinates: this.props.coordinates || []
+	}
+	
+	componentDidMount() {
+  	this.props.getAccounts().then(() => {
 			this.props.accounts.forEach(account => {
 				this.props.getCoordinates(account, [account.bank_address, account.bank_location].join(', '));
 			})  		
   	});	
   }
-  componentDidUpdate(prevProps, prevState) {
+	
+	componentDidUpdate(prevProps) {
 	  if(prevProps.accounts !== this.props.accounts) {
 	    this.setState({accounts: this.props.accounts}); 	    
 	  }
@@ -36,27 +35,22 @@ class Dashboard extends Component {
 	    this.setState({coordinates: this.props.coordinates});
 	  }	  	    	
   }
-  render() {
+	
+	render() {
   	return (
-  		<Fragment>
-  			<Map accounts={this.state.accounts} coordinates={this.state.coordinates} />
-  		</Fragment>
+			<Map accounts={this.state.accounts} coordinates={this.state.coordinates} />
   	)
   }
 }
 
-function mapStateToProps(state) {
-	return {
-		accounts: state.accounts.accounts,
-		coordinates: state.geo.coordinates
-	}
-}
+const mapStateToProps = (state) => ({
+	accounts: state.accounts.accounts,
+	coordinates: state.geo.coordinates
+})
 
-function mapDispatchToProps(dispatch) {
-	return {
-		getAccounts: bindActionCreators(getAccounts, dispatch),
-		getCoordinates: bindActionCreators(getCoordinates, dispatch)
-	}
-}
+const mapDispatchToProps = (dispatch) => ({
+	getAccounts: bindActionCreators(getAccounts, dispatch),
+	getCoordinates: bindActionCreators(getCoordinates, dispatch)
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

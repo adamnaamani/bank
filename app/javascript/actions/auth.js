@@ -1,12 +1,10 @@
 import axios from 'axios';
 import { GET_USER } from "../actions/types";
 
-//GET USER
 export const getUser = () => (dispatch, getState) => {
-  axios.get('/api/v1/get_user', getState).then(response => {
-    dispatch({
-      type: GET_USER,
-      payload: response.data.user
+  axios.get('/api/v1/users', getState)
+    .then(({ data }) => {
+      dispatch({ type: GET_USER, payload: data })
     })
-  }).catch(error => console.log(error))
+    .catch(error => console.log(error))
 }

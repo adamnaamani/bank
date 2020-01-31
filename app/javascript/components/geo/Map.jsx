@@ -78,13 +78,14 @@ class Map extends Component {
     this.state = this.initialState;
   }
   componentDidMount() {
-  	this.loadMap().then(_=> {
+  	this.loadMap().then(() => {
   		setTimeout(_=> { 
   			this.setViewport();
   		}, 1000)
   	});
   }
-  componentDidUpdate(prevProps, prevState) {
+	
+	componentDidUpdate(prevProps, prevState) {
 	  if(prevProps.accounts !== this.props.accounts) {
 	    this.setState({accounts: this.props.accounts});
 	  }  	
@@ -92,12 +93,14 @@ class Map extends Component {
 	    this.setState({coordinates: this.props.coordinates});
 	  }
   }
-  loadMap() {
+	
+	loadMap() {
   	return new Promise(resolve => {
 			map = new google.maps.Map(document.getElementById('map'), {...mapDefaults.mapOptions});
 			resolve();  		
   	})
 	}
+	
 	setViewport() {
 		if(this.state.coordinates.length) {
 			this.state.coordinates.forEach(coordinate => {
@@ -109,6 +112,7 @@ class Map extends Component {
 			map.setCenter(new google.maps.LatLng(mapDefaults.coordinates.lat, mapDefaults.coordinates.lng));
 		}
 	}
+	
 	setStreetview(coordinates) {
 		let element = document.getElementById('streetview')
 	  let request = { origin: coordinates, destination: coordinates, travelMode: google.maps.DirectionsTravelMode.DRIVING }
@@ -126,22 +130,26 @@ class Map extends Component {
 		  }
     })
 	}
+	
 	setStyle() {
 		let styledMapType = new google.maps.StyledMapType(MapDefaults.poiOff);
 		map.mapTypes.set('Clear', styledMapType);
     map.setMapTypeId('Clear');
 	}
+	
 	setMapListeners() {
 		google.maps.event.addListener(map, 'zoom_changed', function() {
 			let zoom = map.getZoom();
 		})
 	}
+	
 	setDataListeners() {
 		map.data.addListener('mouseover', function(event) {
 		});
 		map.data.addListener('click', function(event) {
 		});		
 	}
+	
 	createMarker(coordinate) {
 		return new Promise(resolve => {
 			bounds.extend(coordinate.geometry.location);
@@ -156,11 +164,13 @@ class Map extends Component {
 			resolve();
 		})
 	}
+	
 	plotMarkers() {
 		for(let i = 0; i < markers.length; i++) {
 			markers[i].setMap(map);
 		}
 	}
+	
 	clearMarkers() {
 		let i = markers.length;
 		while(i--) {
@@ -168,6 +178,7 @@ class Map extends Component {
 		}
 	  markers = [];
 	}
+	
 	createInfoWindow(marker, coordinate) {
 		let self = this;
 		let markerContent = coordinate.account.bank_name;
@@ -195,6 +206,7 @@ class Map extends Component {
 	    sidebar.animate({ scrollTop: currentScroll + top }, 300);			
 		});
 	}
+	
 	extendBounds() {
 		map.data.forEach(function(feature){
 		  feature.getGeometry().forEachLatLng(function(latlng) {
@@ -202,18 +214,22 @@ class Map extends Component {
 		  })
 		})
 	}
+	
 	fitBounds() {
 		map.fitBounds(bounds);
 	}
+	
 	addGeoJsonLayer(geojson) {
 		map.data.addGeoJson(geojson);
 		map.data.setStyle(MapDefaults.dataDefaults);
 	}
+	
 	clearGeoJsonLayers() {
 		map.data.forEach(function(feature) {
     	map.data.remove(feature);
 		})
 	}
+	
 	onMouseEnter(account, e) {
 		if(markers.length) {
 			let activeMarker = markers.find(marker => marker.accountId == account);
@@ -224,12 +240,14 @@ class Map extends Component {
 	    }
 		}		
 	}
+	
 	onMouseLeave(account, e) {
 		if(markers.length) {
 			markers.find(marker => marker.accountId == account).setAnimation(null);
 		}
 	} 
-  render() {
+	
+	render() {
   	const { accounts } = this.state;
   	let accountList = accounts.length ? accounts.map(account => {
   		return (
@@ -248,12 +266,12 @@ class Map extends Component {
   		</div>
   	)
   	return (
-  		<Fragment>
+  		<>
   			<div id="map-container" className="row">
   				<div id="map" className="col-sm"></div>
   				<div id="sidebar" className="col-sm">{accountList}</div>
   			</div>
-  		</Fragment>
+  		</>
   	)
   }
 }
